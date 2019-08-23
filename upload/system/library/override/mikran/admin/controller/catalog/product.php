@@ -25,7 +25,6 @@ class mikran_ControllerCatalogProduct extends ControllerCatalogProduct {
     }
 
     public function index() {
-        var_dump('index');
         parent::index();
     }
 

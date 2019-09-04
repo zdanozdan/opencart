@@ -120,7 +120,7 @@ class ModelToolMikran extends Model {
 	}
 
 
-	protected function getDefaultLanguageId($code) {
+	protected function getDefaultLanguageId($code=NULL) {
         if(!isset($code)) {
             $code = $this->config->get('config_language');
         }
@@ -749,9 +749,308 @@ class ModelToolMikran extends Model {
         $this->deleteOptions();
     }
 
+    
+    	function endecrypt ($pwd, $data, $case) {
+		if ($case == 'de') {
+			$data = urldecode($data);
+		}
+		$key[] = "";
+		$box[] = "";
+		$temp_swap = "";
+		$pwd_length = 0;
+		$pwd_length = strlen($pwd);
+		for ($i = 0; $i < 255; $i++) {
+			$key[$i] = ord(substr($pwd, ($i % $pwd_length)+1, 1));
+			$box[$i] = $i;
+		}
+		$x = 0;
+		for ($i = 0; $i < 255; $i++) {
+			$x = ($x + $box[$i] + $key[$i]) % 256;
+			$temp_swap = $box[$i];
+			@$box[$i] = $box[$x];
+			$box[$x] = $temp_swap;
+		}
+		$temp = "";
+		$k = "";
+		$cipherby = "";
+		$cipher = "";
+		$a = 0;
+		$j = 0;
+		for ($i = 0; $i < strlen($data); $i++) {
+			$a = ($a + 1) % 256;
+			$j = ($j + $box[$a]) % 256;
+			$temp = $box[$a];
+			@$box[$a] = $box[$j];
+			$box[$j] = $temp;
+			@$k = $box[(($box[$a] + $box[$j]) % 256)];
+			$cipherby = ord(substr($data, $i, 1)) ^ $k;
+			$cipher .= chr($cipherby);
+		}
+		if ($case == 'de') {
+			$cipher = urldecode(urlencode($cipher));
+		} else {
+			$cipher = urlencode($cipher);
+		}
+		return $cipher;
+	}
+
+    public function enableShippingCountries() {
+        $enabled = array(
+            'CZE',
+            'LTU',
+            'DEU',
+            'SVK',
+            'NLD',
+            'HUN',
+            'BEL',
+            'DNK',
+            'LUX',
+            'AUT',
+            'LVA',
+            'CHE',
+            'EST',
+            'FRA',
+            'SMR',
+            'ITA',
+            'ROM',
+            'GBR',
+            'BGR',
+            'SWE',
+            'IRL',
+            'ESP',
+            'HRV',
+            'SRB',
+            'FIN',
+            'PRT',
+            'NOR',
+            'MLT',
+            'GRC',
+            'CYP',
+            'GRC',
+            'TUR',
+            'ICA',
+            'ALB',
+            'BIH',
+            'MNE',
+            'ISL',
+            'UNK',
+            'FRO',
+            'POL',
+        );
+
+        //disable all countries
+        $sql = "UPDATE " . DB_PREFIX . "country SET status = 0";
+        $this->db->query( $sql );
+
+        $sql = "select * from oc_country";
+        $query = $this->db->query( $sql );
+
+        foreach($query->rows as $row) {
+            if (in_array($row['iso_code_3'],$enabled)) {
+                $sql = "UPDATE " . DB_PREFIX . "country SET status = 1 where iso_code_3='".$row['iso_code_3']."'";
+                $this->db->query( $sql );
+                print_r($row['name']."\r\n");
+            }
+        }
+    }
+
+    public function loadMikranCustomers() {
+        $salt = "69fd1cfc16d0827cfb0c617138406c7c";
+        $pub_key=$salt;
+
+        $conn = $this->getMikranConn();
+
+		$available_zone_ids = $this->getAvailableZoneIds();
+
+        $customer_group_id = $this->getCustomerGroupIds()['Mikran'];
+        $store_id = $this->getAvailableStoreIds()[0];
+
+        $zdanozdan = $this->endecrypt($pub_key,'tomasz@enduhub.com',"");
+        $szkarlat = $this->endecrypt($pub_key,'tomasz.szkarlat@gmail.com',"");
+
+        $this->load->model('localisation/order_status');
+        $order_statuses_query = $this->model_localisation_order_status->getOrderStatuses();
+
+        $customers = array();
+        #$results = $conn->query("select * from users where crypt_password='4da77593f3e0fd4e24c06fe1a7818374'");
+        #$results = $conn->query("select * from users where crypt_email='".$zdanozdan."'");
+        #$results = $conn->query("select * from users where crypt_email='".$szkarlat."'");
+        #$results = $conn->query("select * from users order by date_add desc limit 250");
+        $results = $conn->query("select * from users order by date_add desc");
+        foreach ($results as $result) {
+            $orders = $conn->query("select * from order_register where id_users = '".$result['id']."'");
+            $orders_count = sizeof($orders->fetchAll());
+            if($orders_count > 0) {
+                $customers['customer_id'] = $result['id'];
+                $customers['login']=$this->endecrypt($pub_key,$result['crypt_login'],"de");
+                $customers['firstname']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_name'],"de"));
+                $customers['lastname']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_surname'],"de"));
+                $customers['email']=$this->endecrypt($pub_key,$result['crypt_email'],"de");
+                $customers['password'] = $result['crypt_password'];
+                $customers['company']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_firm'],"de"));
+                $customers['street']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_street'],"de"));
+                $customers['street_n1']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_street_n1'],"de"));
+                $customers['street_n2']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_street_n2'],"de"));
+                $customers['country']=$this->endecrypt($pub_key,$result['crypt_country'],"de");
+                $customers['postcode']=$this->endecrypt($pub_key,$result['crypt_postcode'],"de");
+                $customers['nip']=$this->endecrypt($pub_key,$result['crypt_nip'],"de");
+                $customers['city']=$this->db->escape($this->endecrypt($pub_key,$result['crypt_city'],"de"));
+                $customers['telephone']=$this->endecrypt($pub_key,$result['crypt_phone'],"de");
+                $customers['ip'] = $result['last_ip'];
+                $customers['fax'] = '';
+                $customers['date_added']=$result['date_add'];
+                $customers['store_id'] = $store_id;
+                $customers['status'] = "YES";
+                $customers['customer_id'] = $result['id'];
+                $customers['customer_group_id'] = $customer_group_id;
+                $customers['cart'] = '';
+                $customers['wishlist'] = 'TRUE';
+                $customers['newsletter'] = 'TRUE';
+                foreach($customers as $field=>$customer) {
+                    $customers[$field]=iconv("ISO-8859-2", "UTF-8", $customers[$field]);
+                }
+                //print_r($customers);
+                print_r(array("Total orders for customer: ".$orders_count));
+
+                $exist_custom_field = false;
+                $exist_salt = false;
+                $exist_safe = false;
+                $exist_token = false;
+                $exist_code = false;
+                $exist_approved = false;
+                //var_dump($customers);
+
+                $exist_company_id = false;
+                $exist_tax_id = false;
+                $address = array();
+                $address['customer_id'] = $customers['customer_id'];
+                $address['firstname'] = $customers['firstname'];
+                $address['lastname'] = $customers['lastname'];
+                $address['company'] = $customers['company'];
+                if ($exist_company_id) {
+                    $address['company_id'] = $company_id;
+                }
+                if ($exist_tax_id) {
+                    $address['tax_id'] = $tax_id;
+                }
+                $address['address_1'] = $customers['street'];
+                $address['address_2'] = $customers['street_n1'].' '.$customers['street_n2'];
+                $address['city'] = $customers['city'];
+                $address['postcode'] = $customers['postcode'];
+
+                $country = $this->getCountryByIso2($customers['country']);
+                $address['country_id'] = isset($country['country_id']) ?  $this->getCountryByIso2($customers['country'])['country_id'] : 0;
+                $address['zone_id'] = 0;
+
+                $json = file_get_contents('http://kodpocztowy.intami.pl/api/'.$address['postcode']);
+                if(isset($json)) {
+                    $obj = json_decode($json);
+                    if(isset($obj[0])) {
+                        $state = $obj[0]->wojewodztwo;
+                        $zone = $this->getZoneByName($state);
+                        if(isset($zone['zone_id'])) {
+                            $address['zone_id'] = $zone['zone_id'];
+                        }
+                        if($address['country_id'] == 0) {
+                            $country = $this->getCountryByIso2('PL');
+                            $address['country_id'] = $country['country_id'];
+                        }
+                    }
+                }
+
+                //VAT is custom field with ID=1 - check this id ?
+                $exist_custom_field = true;
+                $address['custom_field'] = '{"1":"'.$customers['nip'].'"}';
+                $address['default'] = "YES";
+                //print_r($address);
+                $this->storeAddressIntoDatabase( $address, $exist_company_id, $exist_tax_id, $exist_custom_field );
+
+                $orders = $conn->query("select * from order_register where id_users = '".$result['id']."'");           
+                foreach($orders as $order) {                    
+                    print_r($order);
+                    $data = array(
+                        'order_id'                => "'".$order['order_id']."'",
+                        'invoice_no'              => "'".$order['order_id']."'",
+                        'invoice_prefix'          => "'MIK_'",
+                        'store_id'                => "'".$customers['store_id']."'",
+                        'store_name'              => "'mikran.pl - sklep sote'",
+                        'store_url'               => "'http://www.sklep.mikran.pl'",
+                        'customer_id'             => "'".$customers['customer_id']."'",
+                        //'customer'                => $order['customer'],
+                        'customer_group_id'       => "'".$customers['customer_group_id']."'",
+                        'firstname'               => "'".$customers['firstname']."'",
+                        'lastname'                => "'".$customers['lastname']."'",
+                        'email'                   => "'".$customers['email']."'",
+                        'telephone'               => "'".$customers['telephone']."'",
+                        'total'                   => "'".$order['amount']."'",
+                        //'currency_id'             => $order_query->row['currency_id'],
+                        'currency_code'           => "'PLN'",
+                        'date_added'              => "'".$order['date_add']."'",
+                        'date_modified'              => "'".$order['date_add']."'",
+                        'fax'                     => "''",
+                        'order_status_id'         => "'".$order_statuses_query[4]['order_status_id']."'", #Assuming expired = 14
+                        'shipping_firstname'        => "'".$customers['firstname']."'",
+                        'shipping_lastname'         => "'".$customers['lastname']."'",
+                        'shipping_company'          => "'".$address['company']."'",
+                        'shipping_address_1'        => "'".$address['address_1']."'",
+                        'shipping_address_2'        => "'".$address['address_2']."'",
+                        'shipping_postcode'         => "'".$address['postcode']."'",
+                        'shipping_city'             => "'".$address['city']."'",
+
+                        'payment_firstname'        => "'".$customers['firstname']."'",
+                        'payment_lastname'         => "'".$customers['lastname']."'",
+                        'payment_company'          => "'".$address['company']."'",
+                        'payment_address_1'        => "'".$address['address_1']."'",
+                        'payment_address_2'        => "'".$address['address_2']."'",
+                        'payment_postcode'         => "'".$address['postcode']."'",
+                        'payment_city'             => "'".$address['city']."'",
+                        'payment_country_id'       => "'".$address['country_id']."'",
+                        'payment_zone_id'           => "'".$address['zone_id']."'",
+                        //'date_modified'           => $order['date_sent']
+                        //'custom_field'            => json_decode($order_query->row['custom_field'], true),
+                    );
+                    $keys = implode(",",array_keys($data));
+                    $values = implode(",",$data);
+                    $sql = "INSERT INTO `".DB_PREFIX."order` ($keys) VALUES ($values);";
+                    print_r($sql);
+//                    die();
+                    $this->db->query($sql);
+
+                    //customer_transation
+
+                    //order_products
+                    $sql = "SELECT * from order_products where order_id=".$order['order_id'];
+                    $products = $conn->query($sql);
+                    foreach($products as $product) {
+                        $product_id = preg_match('([0-9]+)', $product['user_id_main'], $matches);
+                        $product_id = $matches[0];
+                        $product_data = array(
+                            'order_product_id' => "'".$product['id']."'",
+                            'order_id'         => "'".$order['order_id']."'",
+                            'product_id'       => "'".$product_id."'",
+                            'name'             => "'".$product['name']."'",
+                            'model'            => "'".$product_id."'",
+                            'quantity'         => "'".$product['num']."'",
+                            'price'            => "'".$product['price_brutto']."'",
+                            'total'            => "'".$product['num'] * $product['price_brutto']."'",
+                            'tax'              => "'".$product['vat']."'"
+                        );
+
+                        $keys = implode(",",array_keys($product_data));
+                        $values = implode(",",$product_data);
+                        $sql = "INSERT INTO `".DB_PREFIX."order_product` ($keys) VALUES ($values);";
+                        $this->db->query($sql);
+                        print_r($product_data);
+                    }
+                }
+
+                $exist_custom_field = false;
+                $this->storeCustomerIntoDatabase( $customers, $exist_custom_field, $exist_salt, $exist_safe, $exist_token, $exist_code, $exist_approved );
+            }
+        }
+    }
+
     public function loadMikranOptions() {
-        //$this->deleteAllOptions();
-        
         $sql = "SELECT * from main where active=1 and id_category2 not in (12368) ";
         $this->loadMikranOptionsSql($sql);
         $sql = "SELECT * from main where active=1 and id_category2  = 12368 ";
@@ -4774,13 +5073,23 @@ class ModelToolMikran extends Model {
 	}
 
 
-	protected function deleteCustomers() {
+    public function deleteOrders() {
+        $sql = "TRUNCATE TABLE `".DB_PREFIX."order`";
+        $this->db->query( $sql );
+        $sql = "TRUNCATE TABLE `".DB_PREFIX."order_product`";
+        $this->db->query( $sql );
+        $sql = "TRUNCATE TABLE `".DB_PREFIX."order_history`";
+		$this->db->query( $sql );
+	}
+
+
+	public function deleteCustomers() {
 		$sql = "TRUNCATE TABLE `".DB_PREFIX."customer`";
 		$this->db->query( $sql );
 	}
 
 
-	protected function deleteCustomer( $customer_id ) {
+	public function deleteCustomer( $customer_id ) {
 		$sql = "DELETE FROM `".DB_PREFIX."customer` WHERE customer_id='".(int)$customer_id."'";
 		$this->db->query( $sql );
 	}
@@ -4941,6 +5250,17 @@ class ModelToolMikran extends Model {
 	}
 
 
+    public function getCountryByIso2($iso2) {
+		$sql  = "SELECT c.*, z.*, c.`name` AS country_name, z.`name` AS zone_name ";
+		$sql .= "FROM `".DB_PREFIX."country` c ";
+		$sql .= "LEFT JOIN `".DB_PREFIX."zone` z ON z.country_id=c.country_id WHERE iso_code_2='".$iso2."'";
+        
+        //$sql = "SELECT *  FROM `".DB_PREFIX."country` WHERE iso_code_2='".$iso2."'";
+        $query = $this->db->query( $sql );
+        return $query->row;
+    }
+
+
 	protected function getAvailableCountryIds() {
 		$sql = "SELECT country_id, `name` AS country_name FROM `".DB_PREFIX."country`";
 		$query = $this->db->query( $sql );
@@ -4953,6 +5273,11 @@ class ModelToolMikran extends Model {
 		return $country_ids;
 	}
 
+    public function getZoneByName($name) {
+        $sql = "SELECT * FROM `".DB_PREFIX."zone` z where z.name='".$name."'";
+        $query = $this->db->query( $sql );
+        return $query->row;
+    }
 
 	protected function getAvailableZoneIds() {
 		$sql  = "SELECT c.country_id, z.zone_id, c.`name` AS country_name, z.`name` AS zone_name ";
@@ -5035,7 +5360,7 @@ class ModelToolMikran extends Model {
 	}
 
 
-	protected function deleteAddresses() {
+	public function deleteAddresses() {
 		$sql = "TRUNCATE TABLE `".DB_PREFIX."address`";
 		$this->db->query( $sql );
 	}

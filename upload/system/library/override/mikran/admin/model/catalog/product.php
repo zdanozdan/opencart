@@ -83,10 +83,10 @@ class mikran_ModelCatalogProduct extends ModelCatalogProduct {
         if (!isset($pl['language_id'])) {
             return parent::editProduct($product_id,$data);
         }
-
+       
         $pl_tags = explode(',',$data['product_description'][$pl['language_id']]['tag']);
         
-        $source_name = $data['product_description'][$language_id]['name'];
+        $source_name = $data['product_description'][$pl['language_id']]['name'];
         $languages = $this->model_localisation_language->getLanguages();
         unset($languages['pl-pl']);
 

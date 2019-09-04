@@ -85,6 +85,36 @@ class ControllerExtensionMikran extends Controller {
         print_r($message);
     }
 
+    public function countries($param = False) {
+        $this->load->model('extension/mikran');
+
+        if ($param == 'load') {
+            $this->model_extension_mikran->enableShippingCountries();
+            return;
+        }
+
+        print_r(array("Usage : load"));
+    }
+
+    public function customers($param = False) {
+        $this->load->language('extension/mikran');
+        $this->load->model('extension/mikran');
+
+        if ($param == 'load') {
+            $this->model_extension_mikran->loadMikranCustomers();
+            return;
+        }
+
+        if ($param == 'delete') {
+            $this->model_extension_mikran->deleteAddresses();
+            $this->model_extension_mikran->deleteOrders();
+            $this->model_extension_mikran->deleteCustomers();
+            return;
+        }
+
+        print_r(array("Usage : load,delete"));
+    }
+
     public function options($param = False) {
         $this->load->language('extension/mikran');
 		$this->document->setTitle($this->language->get('heading_title'));

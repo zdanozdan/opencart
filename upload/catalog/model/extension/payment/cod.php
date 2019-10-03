@@ -24,7 +24,9 @@ class ModelExtensionPaymentCOD extends Model {
 				'code'       => 'cod',
 				'title'      => $this->language->get('text_title'),
 				'terms'      => '',
-				'sort_order' => $this->config->get('payment_cod_sort_order')
+				'sort_order' => $this->config->get('payment_cod_sort_order'),
+                'render_template'       => true,
+                'render_data' => array()
 			);
 		}
 

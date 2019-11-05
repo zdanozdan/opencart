@@ -35,17 +35,24 @@ $_['mail_smtp_timeout']    = 5;
 $_['mail_verp']            = false;
 $_['mail_parameter']       = '';
 
+//Error Mail
+$_['error_mail_smtp_hostname']   = 'smtp.googlemail.com';
+$_['error_mail_smtp_username']   = 'errors@mikran.com';
+$_['error_mail_smtp_password']   = 'yvnvfakilwdtaiiu';
+$_['error_mail_smtp_port']       = 587;
+$_['error_mail_smtp_protocol']   = 'tls';
+
 // Cache
-$_['cache_engine']         = 'file'; // apc, file, mem or memcached
+$_['cache_engine']         = 'File'; // apc, file, mem or memcached
 $_['cache_expire']         = 3600;
 
 // Session
-$_['session_engine']       = 'db';
+$_['session_engine']       = 'DB';
 $_['session_autostart']    = true;
 $_['session_name']         = 'OCSESSID';
 
 // Template
-$_['template_engine']      = 'twig';
+$_['template_engine']      = 'Twig';
 $_['template_directory']   = '';
 $_['template_cache']       = false;
 

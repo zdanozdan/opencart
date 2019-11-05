@@ -17,11 +17,11 @@ $_['db_port']            = DB_PORT;
 
 // Session
 $_['session_autostart']  = false;
-$_['session_engine']     = 'db';
+$_['session_engine']     = 'DB';
 $_['session_name']       = 'OCSESSID';
 
 // Template
-$_['template_engine']    = 'twig';
+$_['template_engine']    = 'Twig';
 $_['template_directory'] = '';
 $_['template_cache']     = true;
 

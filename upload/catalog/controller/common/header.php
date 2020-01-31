@@ -35,6 +35,14 @@ class ControllerCommonHeader extends Controller {
 		$data['lang'] = $this->language->get('code');
 		$data['direction'] = $this->language->get('direction');
 
+        //messages framework
+        if(isset($this->session->data['header_messages'])) {
+            foreach($this->session->data['header_messages'] as $key=>$message) {
+                $data['messages'][] = $message;            
+                unset($this->session->data['header_messages'][$key]);
+            }
+        }
+           
 		$data['name'] = $this->config->get('config_name');
 
 		if (is_file(DIR_IMAGE . $this->config->get('config_logo'))) {
@@ -76,6 +84,9 @@ class ControllerCommonHeader extends Controller {
 		$data['search'] = $this->load->controller('common/search');
 		$data['cart'] = $this->load->controller('common/cart');
 		$data['menu'] = $this->load->controller('common/menu');
+
+        //DEBUG
+        $data['debug'] = (isset($this->request->server['OC_ENV']) && $this->request->server['OC_ENV']=='debug') ? "true":"";
 
 		return $this->load->view('common/header', $data);
 	}

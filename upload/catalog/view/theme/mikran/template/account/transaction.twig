@@ -20,7 +20,7 @@
         <table class="table table-bordered table-hover">
           <thead>
             <tr>
-              <td class="text-left">{{ column_date_added }}</td>
+		<td class="text-left">{{ column_date_added }}</td>
               <td class="text-left">{{ column_description }}</td>
               <td class="text-right">{{ column_amount }}</td>
             </tr>
@@ -30,7 +30,7 @@
           {% if transactions %}
           {% for transaction in transactions %}
           <tr>
-            <td class="text-left">{{ transaction.date_added }}</td>
+              <td class="text-left">{{ transaction.date_added }}</td>
             <td class="text-left">{{ transaction.description }}</td>
             <td class="text-right">{{ transaction.amount }}</td>
           </tr>

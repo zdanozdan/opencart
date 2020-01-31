@@ -1,33 +1,10 @@
-<h2>{{ text_instruction }}</h2>
-<p><b>{{ text_description }}</b></p>
-<div class="well well-sm">
-  <p>{{ bank }}</p>
-  <p>{{ text_payment }}</p>
+<div class="panel panel-default">
+    <div class="panel-heading"> <h3 class="panel-title"><i class="fa fa-lg fa-credit-card" aria-hidden="true"></i> {{ text_thank_you }}</h3> </div>
+    <div class="panel-body">
+	<p class="panel-message">
+	    {{text_bank_transfer}} {{bank}}. <b>{{account_number}}</b>
+	</p>
+	<hr/>
+	<div class="panel-message text-center alert alert-warning">{{text_order_info}}</div>
+    </div>
 </div>
-<div class="buttons">
-  <div class="pull-right">
-    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
-  </div>
-</div>
-<script type="text/javascript"><!--
-$('#button-confirm').on('click', function() {
-	$.ajax({
-		url: 'index.php?route=extension/payment/bank_transfer/confirm',
-		dataType: 'json',
-		beforeSend: function() {
-			$('#button-confirm').button('loading');
-		},
-		complete: function() {
-			$('#button-confirm').button('reset');
-		},
-		success: function(json) {
-			if (json['redirect']) {
-				location = json['redirect'];	
-			}
-		},
-		error: function(xhr, ajaxOptions, thrownError) {
-			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		}
-	});
-});
-//--></script>

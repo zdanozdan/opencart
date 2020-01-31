@@ -106,10 +106,17 @@
             <td class="text-right"><b>{{ total.title }}</b></td>
             <td class="text-right">{{ total.text }}</td>
             {% if products %}
-            <td></td>
-            {% endif %} </tr>
+		{% if total.code == 'total' and payment_href%}
+		    <td>
+			<a href="{{ payment_href }}" class="btn btn-warning">{{ text_paynow }}</a>
+		    </td>
+		{% else %}
+		    <td></td>
+		{% endif %}
+            {% endif %}
+	  </tr>
           {% endfor %}
-            </tfoot>
+          </tfoot>
           
         </table>
       </div>
@@ -126,6 +133,34 @@
           </tr>
         </tbody>
       </table>
+      {% endif %}
+
+      {% if payments %}
+	  <h3>{{ text_payments }}</h3>
+	  <table class="table table-bordered table-hover">
+              <thead>
+		  <tr>
+		      <td class="text-left">{{ column_date_added }}</td>
+		      <td class="text-left">{{ column_description }}</td>
+		      <td class="text-left">{{ column_amount }}</td>
+		  </tr>
+              </thead>
+              <tbody>        
+		  {% if payments %}
+		      {% for payment in payments %}
+			  <tr>
+			      <td class="text-left">{{ payment.date_added }}</td>
+			      <td class="text-left">{{ payment.description }}</td>
+			      <td class="text-left">{{ payment.amount }}</td>
+			  </tr>
+		      {% endfor %}
+		  {% else %}
+		      <tr>
+			  <td colspan="3" class="text-center">{{ text_no_results }}</td>
+		      </tr>
+		  {% endif %}
+              </tbody>        
+	  </table>
       {% endif %}
       {% if histories %}
       <h3>{{ text_history }}</h3>

@@ -14,7 +14,9 @@
     {{ payment_method.title }}
     {% if payment_method.terms %}
     ({{ payment_method.terms }})
-    {% endif %} </label>
+    {% endif %}
+    {{payment_method.html}}
+  </label>
 </div>
 {% endfor %}
 {% endif %}

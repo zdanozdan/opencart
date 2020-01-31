@@ -1,4 +1,10 @@
-<p>
-    <i class="fa fa-money fa-4x" aria-hidden="true"></i>
-    <i class="fa fa-truck fa-4x" aria-hidden="true"></i>
-</p>
+<blockquote class="blockquote">
+    <p>{{text_explanation}}</p>
+    <p>
+	<i class="fa fa-money fa-4x" aria-hidden="true"></i>
+	<i class="fa fa-truck fa-4x" aria-hidden="true"></i>
+    </p>
+    {% if image %}
+	<img src="{{image}}">
+    {% endif %}
+</blockquote>

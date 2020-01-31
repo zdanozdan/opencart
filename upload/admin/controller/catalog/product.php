@@ -8,6 +8,7 @@ class ControllerCatalogProduct extends Controller {
 		$this->document->setTitle($this->language->get('heading_title'));
 
 		$this->load->model('catalog/product');
+        $this->load->model('catalog/category');
 
 		$this->getList();
 	}
@@ -255,6 +256,22 @@ class ControllerCatalogProduct extends Controller {
 			$filter_status = '';
 		}
 
+        if (isset($this->request->get['filter_category_id'])) {
+			$filter_category_id = $this->request->get['filter_category_id'];
+            $path = $this->model_catalog_category->getCategoryPath($filter_category_id);
+            if(isset($path) && !empty($path)) {
+                $cpath = array();
+                foreach($path as $element) {
+                    $cpath[] = $this->model_catalog_category->getCategory($element['path_id'])['name'];
+                }
+                $this->session->data['success_message'] = sprintf("Wyswietlane produkty dla kategorii i wszystkich podkategorii <h4>%s</h4>",implode($cpath,'->'));
+            } else {
+                $this->session->data['error_message'] = sprintf("Kategoria z takim ID (%s) nie istnieje",$filter_category_id);
+            }
+		} else {
+			$filter_category_id = '';
+		}
+
 		if (isset($this->request->get['sort'])) {
 			$sort = $this->request->get['sort'];
 		} else {
@@ -327,6 +344,7 @@ class ControllerCatalogProduct extends Controller {
 			'filter_price'	  => $filter_price,
 			'filter_quantity' => $filter_quantity,
 			'filter_status'   => $filter_status,
+            'filter_category_id' => $filter_category_id,
 			'sort'            => $sort,
 			'order'           => $order,
 			'start'           => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -477,6 +495,7 @@ class ControllerCatalogProduct extends Controller {
 		$data['filter_price'] = $filter_price;
 		$data['filter_quantity'] = $filter_quantity;
 		$data['filter_status'] = $filter_status;
+        $data['filter_category_id'] = $filter_category_id;
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
@@ -484,6 +503,8 @@ class ControllerCatalogProduct extends Controller {
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
+
+        $data['category_path'] = (isset($cpath) ? implode($cpath,'->'):'no');
 
 		$this->response->setOutput($this->load->view('catalog/product_list', $data));
 	}

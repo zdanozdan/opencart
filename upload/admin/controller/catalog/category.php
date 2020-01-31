@@ -200,7 +200,11 @@ class ControllerCatalogCategory extends Controller {
 			'limit' => $this->config->get('config_limit_admin')
 		);
 
-		$category_total = $this->model_catalog_category->getTotalCategories();
+        if ($this->request->post) {
+            $filter_data['filter_name'] = $this->request->post['filter_name'];
+        }
+        
+		$category_total = $this->model_catalog_category->getTotalCategories($filter_data);
 
 		$results = $this->model_catalog_category->getCategories($filter_data);
 
@@ -210,7 +214,8 @@ class ControllerCatalogCategory extends Controller {
 				'name'        => $result['name'],
 				'sort_order'  => $result['sort_order'],
 				'edit'        => $this->url->link('catalog/category/edit', 'user_token=' . $this->session->data['user_token'] . '&category_id=' . $result['category_id'] . $url, true),
-				'delete'      => $this->url->link('catalog/category/delete', 'user_token=' . $this->session->data['user_token'] . '&category_id=' . $result['category_id'] . $url, true)
+				'delete'      => $this->url->link('catalog/category/delete', 'user_token=' . $this->session->data['user_token'] . '&category_id=' . $result['category_id'] . $url, true),
+                'products'    => $this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . '&filter_category_id=' . $result['category_id'] . $url, true),
 			);
 		}
 
@@ -271,6 +276,8 @@ class ControllerCatalogCategory extends Controller {
 
 		$data['sort'] = $sort;
 		$data['order'] = $order;
+        $data['action'] = $this->url->link('catalog/category', 'user_token=' . $this->session->data['user_token'] . $url, true);
+        $data['filter_name'] = (isset($this->request->post['filter_name']) ? $this->request->post['filter_name'] : '');
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');

@@ -228,6 +228,13 @@ class ControllerSaleOrder extends Controller {
 			$data['orders'][] = array(
 				'order_id'      => $result['order_id'],
 				'customer'      => $result['customer'],
+                'shipping_company' => $result['shipping_company'],
+                'shipping_address_1' => $result['shipping_address_1'],
+                'shipping_address_2' => $result['shipping_address_2'],
+                'shipping_city'      => $result['shipping_city'],
+                'shipping_postcode'  => $result['shipping_postcode'],
+                'shipping_country'   => $result['shipping_country'],
+                'order_status_id'    => $result['order_status_id'],
 				'order_status'  => $result['order_status'] ? $result['order_status'] : $this->language->get('text_missing'),
 				'total'         => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
 				'date_added'    => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
@@ -1020,6 +1027,12 @@ class ControllerSaleOrder extends Controller {
 				'order' => 'ASC'
 			);
 
+            //VAT Field
+            $vat_field = $this->model_customer_custom_field->getVATField();
+            if ($vat_field['custom_id'] == 'VAT' && isset($order_info['custom_field'][$vat_field['custom_field_id']])) {
+                $data['vat'] = $order_info['custom_field'][$vat_field['custom_field_id']];
+            }
+
 			$custom_fields = $this->model_customer_custom_field->getCustomFields($filter_data);
 
 			foreach ($custom_fields as $custom_field) {
@@ -1248,6 +1261,8 @@ class ControllerSaleOrder extends Controller {
 			$data['column_left'] = $this->load->controller('common/column_left');
 			$data['footer'] = $this->load->controller('common/footer');
 
+            $data['payments'] = $this->load->controller('sale/order/payment_history');
+
 			$this->response->setOutput($this->load->view('sale/order_info', $data));
 		} else {
 			return new Action('error/not_found');
@@ -1422,6 +1437,32 @@ class ControllerSaleOrder extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
+
+    public function payment_history() {
+        if (isset($this->request->get['page'])) {
+			$page = $this->request->get['page'];
+		} else {
+			$page = 1;
+		}
+
+        $this->load->model('sale/order');
+
+        //TODO add pagination !
+		$results = $this->model_sale_order->getOrderPaymentsHistory($this->request->get['order_id'], ($page - 1) * 10, 10);
+
+        $data['transactions'] = array();
+
+		foreach ($results as $result) {
+			$data['transactions'][] = array(
+				'amount'      => $this->currency->format($result['amount'], $this->config->get('config_currency')),
+				'description' => $result['description'],
+				'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+                'order_id'    => $result['order_id'],
+                'order_href'  => $this->url->link('account/order/info', 'order_id='.$result['order_id'], true)
+			);
+		}
+        return $this->load->view('sale/payment_history', $data);
+    }
 
 	public function history() {
 		$this->load->language('sale/order');
@@ -1667,6 +1708,15 @@ class ControllerSaleOrder extends Controller {
 				);
 			}
 		}
+
+        // Custom Fields
+		$this->load->model('customer/custom_field');
+
+        //VAT Field
+        $vat_field = $this->model_customer_custom_field->getVATField();
+        if ($vat_field['custom_id'] == 'VAT' && isset($order_info['custom_field'][$vat_field['custom_field_id']])) {
+            $data['vat'] = $order_info['custom_field'][$vat_field['custom_field_id']];
+        }        
 
 		$this->response->setOutput($this->load->view('sale/order_invoice', $data));
 	}

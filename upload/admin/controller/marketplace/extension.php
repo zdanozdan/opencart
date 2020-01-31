@@ -39,7 +39,7 @@ class ControllerMarketplaceExtension extends Controller {
 		
 			if ($this->user->hasPermission('access', 'extension/extension/' . $extension)) {
 				$files = glob(DIR_APPLICATION . 'controller/extension/' . $extension . '/*.php', GLOB_BRACE);
-		
+
 				$data['categories'][] = array(
 					'code' => $extension,
 					'text' => $this->language->get('extension')->get('heading_title') . ' (' . count($files) .')',

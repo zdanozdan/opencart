@@ -1,5 +1,5 @@
 <?php
-class ControllerAccountTransaction extends Controller {
+class ControllerAccountPayments extends Controller {
 	public function index() {
 		if (!$this->customer->isLogged()) {
 			$this->session->data['redirect'] = $this->url->link('account/transaction', '', true);
@@ -24,8 +24,8 @@ class ControllerAccountTransaction extends Controller {
 		);
 
 		$data['breadcrumbs'][] = array(
-			'text' => $this->language->get('text_transaction'),
-			'href' => $this->url->link('account/transaction', '', true)
+			'text' => $this->language->get('text_payments'),
+			'href' => $this->url->link('account/payments', '', true)
 		);
 
 		$this->load->model('account/transaction');
@@ -49,7 +49,7 @@ class ControllerAccountTransaction extends Controller {
 
 		$transaction_total = $this->model_account_transaction->getTotalTransactions();
 
-		$results = $this->model_account_transaction->getTransactions($filter_data);
+		$results = $this->model_account_transaction->getPaymentsHistory($filter_data);
 
 		foreach ($results as $result) {
 			$data['transactions'][] = array(
@@ -57,6 +57,7 @@ class ControllerAccountTransaction extends Controller {
 				'description' => $result['description'],
 				'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
                 'order_id'    => $result['order_id'],
+                'order_href'  => $this->url->link('account/order/info', 'order_id='.$result['order_id'], true)
 			);
 		}
 
@@ -81,6 +82,6 @@ class ControllerAccountTransaction extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->response->setOutput($this->load->view('account/transaction', $data));
+		$this->response->setOutput($this->load->view('account/payments', $data));
 	}
 }

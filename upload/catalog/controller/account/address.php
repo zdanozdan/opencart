@@ -72,16 +72,16 @@ class ControllerAccountAddress extends Controller {
 			if (isset($this->session->data['shipping_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['shipping_address']['address_id'])) {
 				$this->session->data['shipping_address'] = $this->model_account_address->getAddress($this->request->get['address_id']);
 
-				unset($this->session->data['shipping_method']);
-				unset($this->session->data['shipping_methods']);
+				//unset($this->session->data['shipping_method']);
+				//unset($this->session->data['shipping_methods']);
 			}
 
 			// Default Payment Address
 			if (isset($this->session->data['payment_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['payment_address']['address_id'])) {
 				$this->session->data['payment_address'] = $this->model_account_address->getAddress($this->request->get['address_id']);
 
-				unset($this->session->data['payment_method']);
-				unset($this->session->data['payment_methods']);
+				//unset($this->session->data['payment_method']);
+				//unset($this->session->data['payment_methods']);
 			}
 
 			$this->session->data['success'] = $this->language->get('text_edit');
@@ -110,16 +110,16 @@ class ControllerAccountAddress extends Controller {
 
 			// Default Shipping Address
 			if (isset($this->session->data['shipping_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['shipping_address']['address_id'])) {
-				unset($this->session->data['shipping_address']);
-				unset($this->session->data['shipping_method']);
-				unset($this->session->data['shipping_methods']);
+				//unset($this->session->data['shipping_address']);
+				//unset($this->session->data['shipping_method']);
+				//unset($this->session->data['shipping_methods']);
 			}
 
 			// Default Payment Address
 			if (isset($this->session->data['payment_address']['address_id']) && ($this->request->get['address_id'] == $this->session->data['payment_address']['address_id'])) {
-				unset($this->session->data['payment_address']);
-				unset($this->session->data['payment_method']);
-				unset($this->session->data['payment_methods']);
+				//unset($this->session->data['payment_address']);
+				//unset($this->session->data['payment_method']);
+				//unset($this->session->data['payment_methods']);
 			}
 
 			$this->session->data['success'] = $this->language->get('text_delete');

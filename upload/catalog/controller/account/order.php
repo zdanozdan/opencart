@@ -303,6 +303,7 @@ class ControllerAccountOrder extends Controller {
 
 			foreach ($totals as $total) {
 				$data['totals'][] = array(
+                    'code'  => $total['code'],
 					'title' => $total['title'],
 					'text'  => $this->currency->format($total['value'], $order_info['currency_code'], $order_info['currency_value']),
 				);
@@ -323,6 +324,29 @@ class ControllerAccountOrder extends Controller {
 				);
 			}
 
+            // payments
+			$data['payments'] = array();
+            $this->load->model('account/transaction');
+            $this->load->language('account/transaction');
+            $data['column_amount'] = sprintf($this->language->get('column_amount'), $this->config->get('config_currency'));
+
+			$results = $this->model_account_transaction->getPaymentsHistory(array('order_id'=>$this->request->get['order_id']));
+            $total_order_payments = $this->model_account_transaction->getTotalPayments(array('order_id'=>$this->request->get['order_id']));
+            
+            $due = $order_info['total'] - $total_order_payments;
+            if($due > 0) {
+                $data['payment_href'] = $this->url->link('account/order/payment', "order_id=".$this->request->get['order_id'], true);
+            }
+           
+			foreach ($results as $result) {
+				$data['payments'][] = array(
+                    'order_id'    => $result['order_id'],
+					'date_added'  => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
+					'description' => $result['description'],
+                    'amount'      => $this->currency->format($result['amount'], $this->config->get('config_currency')),
+				);
+			}
+
 			$data['continue'] = $this->url->link('account/order', '', true);
 
 			$data['column_left'] = $this->load->controller('common/column_left');
@@ -337,6 +361,70 @@ class ControllerAccountOrder extends Controller {
 			return new Action('error/not_found');
 		}
 	}
+
+    public function payment() {
+        $this->load->language('account/order');
+        
+        if (isset($this->request->get['order_id'])) {
+			$order_id = $this->request->get['order_id'];
+		} else {
+			$order_id = 0;
+		}
+
+        $data['is_logged'] = $this->customer->isLogged();
+        $account = $this->url->link('account/account');
+        $history = $this->url->link('account/order');
+        $data['customer_history'] = sprintf($this->language->get('text_customer_history'),$account,$history);
+
+        $data['breadcrumbs'] = array();
+        
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('text_home'),
+            'href' => $this->url->link('common/home')
+        );
+        
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('text_account'),
+            'href' => $this->url->link('account/account')
+        );
+        
+        $data['breadcrumbs'][] = array(
+            'text' => $this->language->get('heading_title'),
+            'href' => $this->url->link('account/order')
+        );
+
+        $this->load->model('checkout/order');
+		$order_info = $this->model_checkout_order->getOrder($order_id);
+
+        if(isset($order_info['order_id'])) {
+            $data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_order'),
+                'href' => $this->url->link('account/order/info', 'order_id=' . $order_id, true)
+            );
+
+            $data['breadcrumbs'][] = array(
+                'text' => $this->language->get('text_paynow'),
+                'href' => $this->url->link('account/order/payment', 'order_id=' . $order_id, true)
+            );
+
+            $token = md5($order_info['order_id'].OC_TOKEN_SALT);
+            if(isset($this->request->get['token']) && strcmp($token,$this->request->get['token']) == 0) {
+                $data['order_id'] = $order_info['order_id'];
+
+                $this->load->model('account/transaction');
+                $order_payment = $this->model_account_transaction->getOrderPayments($order_info['order_id']);
+                if($order_payment == 0 && isset($order_info['payment_code'])) {
+                    $data['payment'] = $this->load->controller('extension/payment/' . $order_info['payment_code']);
+                }
+            }
+        }
+        
+        $data['column_right'] = $this->load->controller('common/column_right');
+        $data['footer'] = $this->load->controller('common/footer');
+        $data['header'] = $this->load->controller('common/header');
+
+        $this->response->setOutput($this->load->view('account/paynow', $data));
+    }
 
 	public function reorder() {
 		$this->load->language('account/order');

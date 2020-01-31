@@ -11,11 +11,18 @@ class ModelExtensionTotalSubTotal extends Model {
 			}
 		}
 
+        $taxes = $this->cart->getTaxes();
+        $total_tax = 0;
+        foreach($taxes as $tax) {
+            $total_tax += $tax;
+        }
+
 		$total['totals'][] = array(
 			'code'       => 'sub_total',
 			'title'      => $this->language->get('text_sub_total'),
 			'value'      => $sub_total,
-			'sort_order' => $this->config->get('sub_total_sort_order')
+			'sort_order' => $this->config->get('sub_total_sort_order'),
+            'tax'        => $total_tax,
 		);
 
 		$total['total'] += $sub_total;

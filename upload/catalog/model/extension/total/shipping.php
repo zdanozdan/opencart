@@ -2,15 +2,14 @@
 class ModelExtensionTotalShipping extends Model {
 	public function getTotal($total) {
 		if ($this->cart->hasShipping() && isset($this->session->data['shipping_method'])) {
-			$total['totals'][] = array(
-				'code'       => 'shipping',
-				'title'      => $this->session->data['shipping_method']['title'],
-				'value'      => $this->session->data['shipping_method']['cost'],
-				'sort_order' => $this->config->get('total_shipping_sort_order')
-			);
+
+            $total_tax = 0;
 
 			if ($this->session->data['shipping_method']['tax_class_id']) {
 				$tax_rates = $this->tax->getRates($this->session->data['shipping_method']['cost'], $this->session->data['shipping_method']['tax_class_id']);
+                foreach ($tax_rates as $tax_rate) {
+                    $total_tax += $tax_rate['amount'];
+                }
 
 				foreach ($tax_rates as $tax_rate) {
 					if (!isset($total['taxes'][$tax_rate['tax_rate_id']])) {
@@ -20,6 +19,14 @@ class ModelExtensionTotalShipping extends Model {
 					}
 				}
 			}
+
+            $total['totals'][] = array(
+				'code'       => 'shipping',
+				'title'      => $this->session->data['shipping_method']['title'],
+				'value'      => $this->session->data['shipping_method']['cost'],
+				'sort_order' => $this->config->get('total_shipping_sort_order'),
+                'tax'        => $total_tax,
+			);
 
 			$total['total'] += $this->session->data['shipping_method']['cost'];
 		}

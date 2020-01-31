@@ -14,7 +14,7 @@
 <div class="container">
   {% for order in orders %}
   <div style="page-break-after: always;">
-    <h1>{{ text_invoice }} #{{ order.order_id }}</h1>
+    <h1>{{ text_order }} #{{ order.order_id }}</h1>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -55,7 +55,8 @@
       <tbody>
         <tr>
           <td><address>
-            {{ order.payment_address }}
+              {{ order.payment_address }}
+	      <p>NIP: {{vat}}</p>
             </address></td>
           <td><address>
             {{ order.shipping_address }}

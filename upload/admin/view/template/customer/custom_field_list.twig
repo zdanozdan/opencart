@@ -34,7 +34,8 @@
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
-                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                    <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+		    <td>Custom ID</td>
                   <td class="text-left">{% if sort == 'cfd.name' %}
                     <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
                     {% else %}
@@ -61,12 +62,13 @@
               <tbody>
                 {% if custom_fields %}
                 {% for custom_field in custom_fields %}
-                <tr>
+                    <tr>
                   <td class="text-center">{% if custom_field.custom_field_id in selected %}
                     <input type="checkbox" name="selected[]" value="{{ custom_field.custom_field_id }}" checked="checked" />
                     {% else %}
                     <input type="checkbox" name="selected[]" value="{{ custom_field.custom_field_id }}" />
-                    {% endif %}</td>
+                  {% endif %}</td>
+		  <td class="text-left">{{ custom_field.custom_id }}</td>
                   <td class="text-left">{{ custom_field.name }}</td>
                   <td class="text-left">{{ custom_field.location }}</td>
                   <td class="text-left">{{ custom_field.type }}</td>

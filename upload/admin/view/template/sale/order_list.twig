@@ -127,8 +127,19 @@
                     {% endif %}
                     <input type="hidden" name="shipping_code[]" value="{{ order.shipping_code }}" /></td>
                   <td class="text-right">{{ order.order_id }}</td>
-                  <td class="text-left">{{ order.customer }}</td>
-                  <td class="text-left">{{ order.order_status }}</td>
+                  <td class="text-left">{{ order.customer }}
+		      <ul class="list-unstyled">
+			  <li>{{order.shipping_company}}</li>
+			  <li>{{order.shipping_address_1}}</li>
+			  {% if shipping_address_2 %}
+			      {{shipping_address_2}}
+			  {% endif %}
+			  <li>{{order.shipping_postcode}},{{order.shipping_city}}</li>
+			  <li>{{order.shipping_country}}</li>
+		      </ul>			      
+		  </td>
+                  <!-- <td class="text-left {% if order.order_status_id == 1 %}alert alert-success{%endif%}">{{ order.order_status }}</td> -->
+		  <td class="text-left">{{ order.order_status }}</td>
                   <td class="text-right">{{ order.total }}</td>
                   <td class="text-left">{{ order.date_added }}</td>
                   <td class="text-left">{{ order.date_modified }}</td>

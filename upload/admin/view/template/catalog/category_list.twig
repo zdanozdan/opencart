@@ -24,6 +24,25 @@
       <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
     {% endif %}
+    <div class="row">
+	<div id="filter-product" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+            <div class="panel panel-default">
+		<div class="panel-heading">
+		    <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
+		</div>
+		<div class="panel-body">
+		    <div class="form-group">
+			<form method="post" action="{{action}}" class="form-horizontal">
+			    <label class="control-label" for="input-name">{{category_name}}</label>
+			    <input type="text" name="filter_name" value="{{ filter_name }}" placeholder='{{category_name}}' id="input-name" class="form-control" />
+			    <hr/>
+			    <button type="submit" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+			</form>
+		    </div>
+		</div>
+	    </div>
+	</div>
+	<div class="col-md-9 col-md-pull-3 col-sm-12">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
@@ -39,7 +58,8 @@
                     <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
                     {% else %}
                     <a href="{{ sort_name }}">{{ column_name }}</a>
-                    {% endif %}</td>
+                  {% endif %}</td>
+		  <td class="text-right">{{ category_name }} </td>
                   <td class="text-right">{% if sort == 'sort_order' %}
                     <a href="{{ sort_sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a>
                     {% else %}
@@ -57,7 +77,8 @@
                     {% else %}
                     <input type="checkbox" name="selected[]" value="{{ category.category_id }}" />
                     {% endif %}</td>
-                  <td class="text-left">{{ category.name }}</td>
+                    <td class="text-left">{{ category.name }}</td>
+		    <td class="text-right"><a href="{{ category.products }}">{{category.category_id}}</a </td>
                   <td class="text-right">{{ category.sort_order }}</td>
                   <td class="text-right"><a href="{{ category.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
                 </tr>

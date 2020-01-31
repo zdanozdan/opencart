@@ -32,6 +32,12 @@ class ModelCustomerCustomField extends Model {
 		return $custom_field_id;
 	}
 
+    public function getVATField() {
+        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "custom_field` cf LEFT JOIN `" . DB_PREFIX . "custom_field_description` cfd ON (cf.custom_field_id = cfd.custom_field_id) WHERE cf.custom_id = 'VAT' AND  cf.status = '1'  AND cfd.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+		return $query->row;
+    }
+
 	public function editCustomField($custom_field_id, $data) {
 		$this->db->query("UPDATE `" . DB_PREFIX . "custom_field` SET type = '" . $this->db->escape($data['type']) . "', value = '" . $this->db->escape($data['value']) . "', validation = '" . $this->db->escape($data['validation']) . "', location = '" . $this->db->escape($data['location']) . "', status = '" . (int)$data['status'] . "', sort_order = '" . (int)$data['sort_order'] . "' WHERE custom_field_id = '" . (int)$custom_field_id . "'");
 

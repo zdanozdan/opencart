@@ -277,7 +277,8 @@ class ModelCatalogCategory extends Model {
 	}
 	
 	public function getCategoryPath($category_id) {
-		$query = $this->db->query("SELECT category_id, path_id, level FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$category_id . "'");
+		//$query = $this->db->query("SELECT category_id, path_id, level FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$category_id . "'");
+        $query = $this->db->query("SELECT category_id, path_id, level FROM " . DB_PREFIX . "category_path WHERE category_id = '" . (int)$category_id . "' ORDER BY level ASC");
 
 		return $query->rows;
 	}
@@ -330,9 +331,14 @@ class ModelCatalogCategory extends Model {
 		return $category_layout_data;
 	}
 
-	public function getTotalCategories() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category");
+	public function getTotalCategories($filter_data) {
+		$sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category";
 
+        if (!empty($filter_data['filter_name'])) {
+            $sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "category cp LEFT JOIN " . DB_PREFIX . "category_description cd2 ON (cp.category_id = cd2.category_id) WHERE cd2.name LIKE '" . $this->db->escape($filter_data['filter_name']) . "%'";
+		}
+
+        $query = $this->db->query($sql);
 		return $query->row['total'];
 	}
 	

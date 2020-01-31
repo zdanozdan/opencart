@@ -1,7 +1,19 @@
 <?php
 class ModelAccountOrder extends Model {
-	public function getOrder($order_id) {
-		$order_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND customer_id != '0' AND order_status_id > '0'");
+    public function getOrder($order_id) {
+        $sql = "SELECT * FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->customer->getId() . "' AND customer_id != '0' AND order_status_id > '0'";
+
+        return $this->getOrderQuery($sql);
+    }
+        
+    public function getOrderById($order_id) {
+        $sql = "SELECT * FROM `" . DB_PREFIX . "order` WHERE order_id = '" . (int)$order_id . "' AND order_status_id > '0'";
+
+        return $this->getOrderQuery($sql);
+    }
+    
+	public function getOrderQuery($sql) {
+		$order_query = $this->db->query($sql);
 
 		if ($order_query->num_rows) {
 			$country_query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "country` WHERE country_id = '" . (int)$order_query->row['payment_country_id'] . "'");
@@ -68,6 +80,7 @@ class ModelAccountOrder extends Model {
 				'payment_iso_code_3'      => $payment_iso_code_3,
 				'payment_address_format'  => $order_query->row['payment_address_format'],
 				'payment_method'          => $order_query->row['payment_method'],
+                'payment_code'            => $order_query->row['payment_code'],
 				'shipping_firstname'      => $order_query->row['shipping_firstname'],
 				'shipping_lastname'       => $order_query->row['shipping_lastname'],
 				'shipping_company'        => $order_query->row['shipping_company'],

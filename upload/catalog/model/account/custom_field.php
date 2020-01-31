@@ -6,6 +6,12 @@ class ModelAccountCustomField extends Model {
 		return $query->row;
 	}
 
+    public function getVATField() {
+        $query = $this->db->query("SELECT * FROM `" . DB_PREFIX . "custom_field` cf LEFT JOIN `" . DB_PREFIX . "custom_field_description` cfd ON (cf.custom_field_id = cfd.custom_field_id) WHERE cf.custom_id = 'VAT' AND  cf.status = '1'  AND cfd.language_id = '" . (int)$this->config->get('config_language_id') . "'");
+
+		return $query->row;
+    }
+
 	public function getCustomFields($customer_group_id = 0) {
 		$custom_field_data = array();
 

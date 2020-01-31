@@ -1,13 +1,17 @@
 <?php
 class ModelAccountTransaction extends Model {
-	public function getTransactions($data = array()) {
-		$sql = "SELECT * FROM `" . DB_PREFIX . "customer_transaction` WHERE customer_id = '" . (int)$this->customer->getId() . "'";
+	public function getTransactionsFrom($table, $data = array()) {
+		$sql = "SELECT * FROM `" . DB_PREFIX . $table."` WHERE customer_id = '" . (int)$this->customer->getId() . "'";
 
 		$sort_data = array(
 			'amount',
 			'description',
 			'date_added'
 		);
+
+        if (isset($data['order_id'])) {
+            $sql .= " AND order_id = ".$data['order_id'];
+        }
 
 		if (isset($data['sort']) && in_array($data['sort'], $sort_data)) {
 			$sql .= " ORDER BY " . $data['sort'];
@@ -38,6 +42,10 @@ class ModelAccountTransaction extends Model {
 		return $query->rows;
 	}
 
+    public function getTransactions($data = array()) {
+        return $this->getTransactionsFrom('customer_transaction',$data);
+    }
+
 	public function getTotalTransactions() {
 		$query = $this->db->query("SELECT COUNT(*) AS total FROM `" . DB_PREFIX . "customer_transaction` WHERE customer_id = '" . (int)$this->customer->getId() . "'");
 
@@ -53,4 +61,28 @@ class ModelAccountTransaction extends Model {
 			return 0;
 		}
 	}
+
+    //Payments
+    public function getPaymentsHistory($data = array()) {
+        return $this->getTransactionsFrom('customer_payments',$data);
+    }
+
+    public function getTotalPayments($data) {
+		$sql = "SELECT SUM(amount) AS total FROM `" . DB_PREFIX . "customer_payments` WHERE customer_id = '" . (int)$this->customer->getId() . "'";
+        if (isset($data['order_id'])) {
+            $sql .= " AND order_id = '".$data['order_id']."'";
+        }
+        $query = $this->db->query($sql);
+		return $query->row['total'];
+	}
+
+    public function getOrderPayments($order_id) {
+        $sql = "SELECT SUM(amount) as total FROM `" . DB_PREFIX . "customer_payments` WHERE order_id = '" . (int)$order_id . "'";
+        $query = $this->db->query($sql);
+		return $query->row['total'];
+    }
+    
+    public function addPaymentHistory($customer_id, $data) {
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "customer_payments` SET customer_id = '" . (int)$customer_id . "', order_id='".$data['order_id']."', description='".$data['description']."', amount='".$data['amount']."', date_added = NOW()");
+    }
 }

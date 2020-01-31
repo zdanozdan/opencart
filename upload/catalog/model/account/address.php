@@ -20,6 +20,14 @@ class ModelAccountAddress extends Model {
 		}
 	}
 
+    public function updateAddress($address_id) {
+        $address = $this->getAddress($address_id);
+        if ($this->getAddress($address_id)) {
+			$this->db->query("UPDATE " . DB_PREFIX . "customer SET address_id = '" . (int)$address_id . "' WHERE customer_id = '" . (int)$this->customer->getId() . "'");
+		}
+        return $address;
+    }
+
 	public function deleteAddress($address_id) {
 		$this->db->query("DELETE FROM " . DB_PREFIX . "address WHERE address_id = '" . (int)$address_id . "' AND customer_id = '" . (int)$this->customer->getId() . "'");
 	}

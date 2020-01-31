@@ -2,11 +2,17 @@
 class ControllerExtensionModuleCategory extends Controller {
 	public function index() {
 		$this->load->language('extension/module/category');
+        $this->load->model('catalog/product');        
 
+        $parts = array();
+        
 		if (isset($this->request->get['path'])) {
 			$parts = explode('_', (string)$this->request->get['path']);
 		} else {
-			$parts = array();
+            if (isset($this->request->get['product_id'])) {
+                $product_path = $this->model_catalog_product->getCategoryPath($this->request->get['product_id']);
+                $parts = explode('_', $product_path);
+            }
 		}
 
 		if (isset($parts[0])) {

@@ -13,11 +13,22 @@ class ControllerProductProduct extends Controller {
 		);
 
 		$this->load->model('catalog/category');
+        $this->load->model('catalog/product');
 
-		if (isset($this->request->get['path'])) {
+        if (isset($this->request->get['product_id'])) {
+			$product_id = (int)$this->request->get['product_id'];
+		} else {
+			$product_id = 0;
+		}
+
+        $product_path = $this->model_catalog_product->getCategoryPath($product_id);
+
+		//if (isset($this->request->get['path'])) {
+        if ($product_path) {
 			$path = '';
 
-			$parts = explode('_', (string)$this->request->get['path']);
+			//$parts = explode('_', (string)$this->request->get['path']);
+            $parts = explode('_', (string)$product_path);
 
 			$category_id = (int)array_pop($parts);
 
@@ -62,10 +73,11 @@ class ControllerProductProduct extends Controller {
 
 				$data['breadcrumbs'][] = array(
 					'text' => $category_info['name'],
-					'href' => $this->url->link('product/category', 'path=' . $this->request->get['path'] . $url)
+					'href' => $this->url->link('product/category', 'path=' .$product_path . $url)
 				);
 			}
 		}
+
 
 		$this->load->model('catalog/manufacturer');
 
@@ -148,21 +160,20 @@ class ControllerProductProduct extends Controller {
 			);
 		}
 
-		if (isset($this->request->get['product_id'])) {
-			$product_id = (int)$this->request->get['product_id'];
-		} else {
-			$product_id = 0;
-		}
-
 		$this->load->model('catalog/product');
+        //we need last modification date to display on theme bottom                                         
+        $data['date_modified'] = $this->model_catalog_product->getDateModified($product_id);
+        $data['text_date_modified'] = $this->language->get('text_date_modified');
 
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 
 		if ($product_info) {
 			$url = '';
 
-			if (isset($this->request->get['path'])) {
-				$url .= '&path=' . $this->request->get['path'];
+			//if (isset($this->request->get['path'])) {
+            if ($product_path) {
+				//$url .= '&path=' . $this->request->get['path'];
+                $url .= '&path=' . $product_path;
 			}
 
 			if (isset($this->request->get['filter'])) {
@@ -450,8 +461,12 @@ class ControllerProductProduct extends Controller {
 		} else {
 			$url = '';
 
-			if (isset($this->request->get['path'])) {
-				$url .= '&path=' . $this->request->get['path'];
+			//if (isset($this->request->get['path'])) {
+            //		$url .= '&path=' . $this->request->get['path'];
+			//}
+
+            if ($product_path) {
+                $url .= '&path=' . $product_path;
 			}
 
 			if (isset($this->request->get['filter'])) {

@@ -1,5 +1,5 @@
 <?php
-class ControllerProductSearch extends Controller {
+class ControllerProductSearchBase extends Controller {
 	public function index() {
 		$this->load->language('product/search');
 
@@ -454,4 +454,26 @@ class ControllerProductSearch extends Controller {
 
 		$this->response->setOutput($this->load->view('product/search', $data));
 	}
+}
+
+class ControllerProductSearch extends ControllerProductSearchBase {
+    protected function redirect_plu($plu) {
+        $this->load->model('catalog/product');
+        $path = $this->model_catalog_product->getCategoryPath($plu);
+        $this->response->redirect($this->url->link('product/product', 'product_id=' . $plu.'&path='.$path.'&search='.$plu));
+    }
+
+    #NOT Working ? No call is comming, why ?
+    public function preRender($template_buffer,$template_name,&$data) {
+        //var_dump($data['products']);
+        //var_dump('prerender');
+    }
+    
+	public function index() {
+        if (isset($this->request->get['search']) && is_numeric($this->request->get['search'])) {
+            return $this->redirect_plu($this->request->get['search']);
+        }
+
+        return parent::index();
+    }
 }

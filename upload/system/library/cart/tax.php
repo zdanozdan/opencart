@@ -15,15 +15,29 @@ final class Tax {
 	public function setShippingAddress($country_id, $zone_id) {
 		$tax_query = $this->db->query("SELECT tr1.tax_class_id, tr2.tax_rate_id, tr2.name, tr2.rate, tr2.type, tr1.priority FROM " . DB_PREFIX . "tax_rule tr1 LEFT JOIN " . DB_PREFIX . "tax_rate tr2 ON (tr1.tax_rate_id = tr2.tax_rate_id) INNER JOIN " . DB_PREFIX . "tax_rate_to_customer_group tr2cg ON (tr2.tax_rate_id = tr2cg.tax_rate_id) LEFT JOIN " . DB_PREFIX . "zone_to_geo_zone z2gz ON (tr2.geo_zone_id = z2gz.geo_zone_id) LEFT JOIN " . DB_PREFIX . "geo_zone gz ON (tr2.geo_zone_id = gz.geo_zone_id) WHERE tr1.based = 'shipping' AND tr2cg.customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "' AND z2gz.country_id = '" . (int)$country_id . "' AND (z2gz.zone_id = '0' OR z2gz.zone_id = '" . (int)$zone_id . "') ORDER BY tr1.priority ASC");
 
-		foreach ($tax_query->rows as $result) {
-			$this->tax_rates[$result['tax_class_id']][$result['tax_rate_id']] = array(
-				'tax_rate_id' => $result['tax_rate_id'],
-				'name'        => $result['name'],
-				'rate'        => $result['rate'],
+        if($tax_query->num_rows > 0 ) {
+            foreach ($tax_query->rows as $result) {
+                $this->tax_rates[$result['tax_class_id']][$result['tax_rate_id']] = array(
+                    'tax_rate_id' => $result['tax_rate_id'],
+                    'name'        => $result['name'],
+                    'rate'        => $result['rate'],
+                    'type'        => $result['type'],
+                    'priority'    => $result['priority']
+                );
+            }
+        } else {
+            $tax_query = $this->db->query("SELECT tr1.tax_class_id, tr2.tax_rate_id, tr2.name, tr2.rate, tr2.type, tr1.priority FROM " . DB_PREFIX . "tax_rule tr1 LEFT JOIN " . DB_PREFIX . "tax_rate tr2 ON (tr1.tax_rate_id = tr2.tax_rate_id)");
+            
+            foreach ($tax_query->rows as $result) {
+                $this->tax_rates[$result['tax_class_id']][$result['tax_rate_id']] = array(
+                    'tax_rate_id' => $result['tax_rate_id'],
+                    'name'        => $result['name'],
+                    'rate'        => $result['rate'],
 				'type'        => $result['type'],
-				'priority'    => $result['priority']
-			);
-		}
+                    'priority'    => $result['priority']
+                );
+            }
+        }        
 	}
 
 	public function setPaymentAddress($country_id, $zone_id) {
@@ -125,4 +139,24 @@ final class Tax {
 
 		return $tax_rate_data;
 	}
+
+	public function getUnitAvgTaxRates($unit_price, $tax_class_id) {
+        $amount = 0;
+        
+        $tax_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "tax_rule WHERE tax_class_id = '" . (int)$tax_class_id . "'");
+        
+        foreach ($tax_query->rows as $tax_rule) {
+            $tax_rate_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "tax_rate WHERE tax_rate_id = '" . (int)$tax_rule['tax_rate_id'] . "'");
+            foreach ($tax_rate_query->rows as $tax_rate) {
+
+                if ($tax_rate['type'] == 'F') {
+					$amount += $tax_rate['rate'];
+				} elseif ($tax_rate['type'] == 'P') {
+					$amount += ($unit_price / 100 * $tax_rate['rate']);
+				}
+            }            
+        }
+        $avg_tax_rate = array('price'=>$unit_price,'avg_tax_amount'=>$amount,'avg_tax_rate'=>$amount/$unit_price*100);
+        return $avg_tax_rate; 
+    }
 }

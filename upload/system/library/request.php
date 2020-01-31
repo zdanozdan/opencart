@@ -48,4 +48,8 @@ class Request {
 
 		return $data;
 	}
+
+    public function is_post() {
+        return $this->server['REQUEST_METHOD'] === 'POST' ? True:False;
+    }
 }

@@ -1,0 +1,660 @@
+
+
+===========================
+Basic payment notification
+===========================
+2020-01-24 12:47:09
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1MVDPVX
+    [tr_date] => 2020-01-24 13:47:03
+    [tr_crc] => NDM3NjQ=
+    [tr_amount] => 193.45
+    [tr_paid] => 193.45
+    [tr_desc] => Numer zamówienia 43764
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => e805dca9c586a2b4f97945fb31be9bda
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-24 13:27:36
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1MVGUAX
+    [tr_date] => 2020-01-24 14:27:31
+    [tr_crc] => NDM3ODA=
+    [tr_amount] => 223.44
+    [tr_paid] => 223.44
+    [tr_desc] => Numer zamówienia 43780
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => d4974eef907373a8e93cd1bd347bede9
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-24 14:16:13
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1MVLSYX
+    [tr_date] => 2020-01-24 15:16:09
+    [tr_crc] => NDM3OTY=
+    [tr_amount] => 43.45
+    [tr_paid] => 43.45
+    [tr_desc] => Numer zamówienia 43796
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 59859623357d60fa7f9517df4e7920df
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-27 11:11:46
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N2UZ6X
+    [tr_date] => 2020-01-27 12:11:40
+    [tr_crc] => NDM4MDc=
+    [tr_amount] => 0.90
+    [tr_paid] => 0.90
+    [tr_desc] => Numer zamówienia 43807
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 1ea8bf7817e2ba3932e49aadb8ebca6e
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-27 11:22:31
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N2VR0X
+    [tr_date] => 2020-01-27 12:22:28
+    [tr_crc] => NDM4MDg=
+    [tr_amount] => 180.00
+    [tr_paid] => 180.00
+    [tr_desc] => Numer zamówienia 43808
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 98166461ffb55ff480cff8d822caea5f
+)
+
+
+
+Check MD5: 1
+===========================
+TException
+===========================
+2020-01-27 11:38:43
+ip: 
+Field "email" must be a string, type given: NULL in file /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/StringType.php line: 19
+
+#0 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(44): tpayLibs\src\_class_tpay\Validators\VariableTypes\StringType->validateType(NULL, 'email')
+#1 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(20): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->validateType('string', NULL, 'email')
+#2 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(113): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->__construct('string', NULL, 'email')
+#3 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(75): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateFields('email', NULL, Array)
+#4 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(46): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->hasValidFields(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), 'email', NULL)
+#5 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentOptions/BasicPaymentOptions.php(57): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateConfig(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), Array)
+#6 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentForms/PaymentBasicForms.php(71): tpayLibs\src\_class_tpay\PaymentOptions\BasicPaymentOptions->prepareConfig(Array)
+#7 /home/mikran/opencart/upload/system/library/tpayLibs/examples/BasicPaymentForm.php(26): tpayLibs\src\_class_tpay\PaymentForms\PaymentBasicForms->getTransactionForm(Array)
+#8 /home/mikran/opencart/upload/catalog/controller/extension/payment/tpay.php(94): tpayLibs\examples\TpayBasicExample->getDataForTpay(Array)
+#9 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerExtensionPaymentTpay->pay()
+#10 /home/mikran/opencart/upload/catalog/controller/startup/router.php(25): Action->execute(Object(Registry))
+#11 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerStartupRouter->index()
+#12 /home/mikran/opencart/upload/system/engine/router.php(67): Action->execute(Object(Registry))
+#13 /home/mikran/opencart/upload/system/engine/router.php(56): Router->execute(Object(Action))
+#14 /home/mikran/opencart/upload/system/framework.php(264): Router->dispatch(Object(Action), Object(Action))
+#15 /home/mikran/opencart/upload/system/startup.php(104): require_once('/home/mikran/op...')
+#16 /home/mikran/opencart/upload/index.php(19): start('catalog')
+#17 {main}
+
+
+===========================
+Basic payment notification
+===========================
+2020-01-27 11:39:28
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N2WZUX
+    [tr_date] => 2020-01-27 12:39:22
+    [tr_crc] => NDM4MTA=
+    [tr_amount] => 51.00
+    [tr_paid] => 51.00
+    [tr_desc] => Numer zamówienia 43810
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 93f28f9ed1b1bc8d9d8f1c4e9f81a4c6
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-27 12:32:29
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N31KAX
+    [tr_date] => 2020-01-27 13:32:25
+    [tr_crc] => NDM4MTE=
+    [tr_amount] => 231.00
+    [tr_paid] => 231.00
+    [tr_desc] => Numer zamówienia 43811
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 82fe818c22609c87ddb9bf889fd1f2a2
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-27 12:34:55
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N31RKX
+    [tr_date] => 2020-01-27 13:34:46
+    [tr_crc] => NDM4MTI=
+    [tr_amount] => 231.00
+    [tr_paid] => 231.00
+    [tr_desc] => Numer zamówienia 43812
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 6126c2da4e14ca740a5e5989d296a741
+)
+
+
+
+Check MD5: 1
+===========================
+TException
+===========================
+2020-01-28 12:36:32
+ip: 
+Field "email" must be a string, type given: NULL in file /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/StringType.php line: 19
+
+#0 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(44): tpayLibs\src\_class_tpay\Validators\VariableTypes\StringType->validateType(NULL, 'email')
+#1 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(20): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->validateType('string', NULL, 'email')
+#2 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(113): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->__construct('string', NULL, 'email')
+#3 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(75): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateFields('email', NULL, Array)
+#4 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(46): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->hasValidFields(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), 'email', NULL)
+#5 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentOptions/BasicPaymentOptions.php(57): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateConfig(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), Array)
+#6 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentForms/PaymentBasicForms.php(71): tpayLibs\src\_class_tpay\PaymentOptions\BasicPaymentOptions->prepareConfig(Array)
+#7 /home/mikran/opencart/upload/system/library/tpayLibs/examples/BasicPaymentForm.php(26): tpayLibs\src\_class_tpay\PaymentForms\PaymentBasicForms->getTransactionForm(Array)
+#8 /home/mikran/opencart/upload/catalog/controller/extension/payment/tpay.php(96): tpayLibs\examples\TpayBasicExample->getDataForTpay(Array)
+#9 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerExtensionPaymentTpay->pay()
+#10 /home/mikran/opencart/upload/catalog/controller/startup/router.php(25): Action->execute(Object(Registry))
+#11 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerStartupRouter->index()
+#12 /home/mikran/opencart/upload/system/engine/router.php(67): Action->execute(Object(Registry))
+#13 /home/mikran/opencart/upload/system/engine/router.php(56): Router->execute(Object(Action))
+#14 /home/mikran/opencart/upload/system/framework.php(264): Router->dispatch(Object(Action), Object(Action))
+#15 /home/mikran/opencart/upload/system/startup.php(104): require_once('/home/mikran/op...')
+#16 /home/mikran/opencart/upload/index.php(19): start('catalog')
+#17 {main}
+
+
+===========================
+TException
+===========================
+2020-01-28 12:40:01
+ip: 
+Field "email" must be a string, type given: NULL in file /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/StringType.php line: 19
+
+#0 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(44): tpayLibs\src\_class_tpay\Validators\VariableTypes\StringType->validateType(NULL, 'email')
+#1 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(20): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->validateType('string', NULL, 'email')
+#2 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(113): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->__construct('string', NULL, 'email')
+#3 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(75): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateFields('email', NULL, Array)
+#4 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(46): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->hasValidFields(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), 'email', NULL)
+#5 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentOptions/BasicPaymentOptions.php(57): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateConfig(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), Array)
+#6 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentForms/PaymentBasicForms.php(71): tpayLibs\src\_class_tpay\PaymentOptions\BasicPaymentOptions->prepareConfig(Array)
+#7 /home/mikran/opencart/upload/system/library/tpayLibs/examples/BasicPaymentForm.php(26): tpayLibs\src\_class_tpay\PaymentForms\PaymentBasicForms->getTransactionForm(Array)
+#8 /home/mikran/opencart/upload/catalog/controller/extension/payment/tpay.php(98): tpayLibs\examples\TpayBasicExample->getDataForTpay(Array)
+#9 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerExtensionPaymentTpay->pay()
+#10 /home/mikran/opencart/upload/catalog/controller/startup/router.php(25): Action->execute(Object(Registry))
+#11 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerStartupRouter->index()
+#12 /home/mikran/opencart/upload/system/engine/router.php(67): Action->execute(Object(Registry))
+#13 /home/mikran/opencart/upload/system/engine/router.php(56): Router->execute(Object(Action))
+#14 /home/mikran/opencart/upload/system/framework.php(264): Router->dispatch(Object(Action), Object(Action))
+#15 /home/mikran/opencart/upload/system/startup.php(104): require_once('/home/mikran/op...')
+#16 /home/mikran/opencart/upload/index.php(19): start('catalog')
+#17 {main}
+
+
+===========================
+TException
+===========================
+2020-01-28 12:40:07
+ip: 
+Field "email" must be a string, type given: NULL in file /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/StringType.php line: 19
+
+#0 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(44): tpayLibs\src\_class_tpay\Validators\VariableTypes\StringType->validateType(NULL, 'email')
+#1 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/VariableTypes/VariableTypesValidator.php(20): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->validateType('string', NULL, 'email')
+#2 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(113): tpayLibs\src\_class_tpay\Validators\VariableTypes\VariableTypesValidator->__construct('string', NULL, 'email')
+#3 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(75): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateFields('email', NULL, Array)
+#4 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/Validators/FieldsConfigValidator.php(46): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->hasValidFields(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), 'email', NULL)
+#5 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentOptions/BasicPaymentOptions.php(57): tpayLibs\src\_class_tpay\Utilities\ObjectsHelper->validateConfig(Object(tpayLibs\src\_class_tpay\Validators\PaymentTypes\PaymentTypeBasic), Array)
+#6 /home/mikran/opencart/upload/system/library/tpayLibs/src/_class_tpay/PaymentForms/PaymentBasicForms.php(71): tpayLibs\src\_class_tpay\PaymentOptions\BasicPaymentOptions->prepareConfig(Array)
+#7 /home/mikran/opencart/upload/system/library/tpayLibs/examples/BasicPaymentForm.php(26): tpayLibs\src\_class_tpay\PaymentForms\PaymentBasicForms->getTransactionForm(Array)
+#8 /home/mikran/opencart/upload/catalog/controller/extension/payment/tpay.php(98): tpayLibs\examples\TpayBasicExample->getDataForTpay(Array)
+#9 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerExtensionPaymentTpay->pay()
+#10 /home/mikran/opencart/upload/catalog/controller/startup/router.php(25): Action->execute(Object(Registry))
+#11 /home/mikran/opencart/upload/system/engine/action.php(79): ControllerStartupRouter->index()
+#12 /home/mikran/opencart/upload/system/engine/router.php(67): Action->execute(Object(Registry))
+#13 /home/mikran/opencart/upload/system/engine/router.php(56): Router->execute(Object(Action))
+#14 /home/mikran/opencart/upload/system/framework.php(264): Router->dispatch(Object(Action), Object(Action))
+#15 /home/mikran/opencart/upload/system/startup.php(104): require_once('/home/mikran/op...')
+#16 /home/mikran/opencart/upload/index.php(19): start('catalog')
+#17 {main}
+
+
+===========================
+Basic payment notification
+===========================
+2020-01-28 13:00:20
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N5BGVX
+    [tr_date] => 2020-01-28 14:00:13
+    [tr_crc] => NDM4MTI=
+    [tr_amount] => 231.00
+    [tr_paid] => 231.00
+    [tr_desc] => Numer zamówienia 43812
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 45f117cb85a162c5841e7d51fbc26406
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-28 13:08:23
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N5C31X
+    [tr_date] => 2020-01-28 14:08:17
+    [tr_crc] => NDM4MTI=
+    [tr_amount] => 231.00
+    [tr_paid] => 231.00
+    [tr_desc] => Numer zamówienia 43812
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 56b24cdff93de8dfb6c74c461f889a8e
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-28 13:41:17
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N5EEWX
+    [tr_date] => 2020-01-28 14:41:10
+    [tr_crc] => NDM3OTY=
+    [tr_amount] => 43.45
+    [tr_paid] => 43.45
+    [tr_desc] => Numer zamówienia 43796
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 60344d81d48e289e9a3f2db92d7aaafe
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 12:28:18
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N7L8NX
+    [tr_date] => 2020-01-29 13:28:13
+    [tr_crc] => NDM4MTM=
+    [tr_amount] => 209.07
+    [tr_paid] => 209.07
+    [tr_desc] => Numer zamówienia 43813
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => cfc218aeab5a8f62e74661ccd90bd633
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 12:33:13
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N7LKRX
+    [tr_date] => 2020-01-29 13:33:09
+    [tr_crc] => NDM4MTM=
+    [tr_amount] => 209.07
+    [tr_paid] => 209.07
+    [tr_desc] => Numer zamówienia 43813
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 5f53922e113ff4d530065f99277f7c66
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 12:43:56
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N7MB4X
+    [tr_date] => 2020-01-29 13:43:49
+    [tr_crc] => NDM4MDc=
+    [tr_amount] => 0.90
+    [tr_paid] => 0.90
+    [tr_desc] => Numer zamówienia 43807
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 40a8ea0fe63befd10bbeb76a91f453a8
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 13:13:10
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N7PGEX
+    [tr_date] => 2020-01-29 14:13:04
+    [tr_crc] => NDM4MTQ=
+    [tr_amount] => 209.07
+    [tr_paid] => 209.07
+    [tr_desc] => Numer zamówienia 43814
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz.zdanowski@mikran.com
+    [test_mode] => 1
+    [md5sum] => b134f97905033bd238be93ee93a1d53b
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 15:10:55
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N80JHX
+    [tr_date] => 2020-01-29 16:10:48
+    [tr_crc] => NDM4MTE=
+    [tr_amount] => 231.00
+    [tr_paid] => 231.00
+    [tr_desc] => Numer zamówienia 43811
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 7db453daba4f50006e332bc6166d0dc3
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-29 21:37:41
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N9144X
+    [tr_date] => 2020-01-29 22:37:34
+    [tr_crc] => NDM4MzY=
+    [tr_amount] => 249.45
+    [tr_paid] => 249.45
+    [tr_desc] => Numer zamówienia 43836
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 02c99544f6c7cbd3a503af4bff3c7ad0
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-30 10:36:20
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N9RMMX
+    [tr_date] => 2020-01-30 11:36:13
+    [tr_crc] => NDM4NDE=
+    [tr_amount] => 249.45
+    [tr_paid] => 249.45
+    [tr_desc] => Numer zamówienia 43841
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz.zdanowski@mikran.com
+    [test_mode] => 1
+    [md5sum] => aa0281cbc492a5cebe54f135f0e373b5
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-30 10:55:38
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N9T1MX
+    [tr_date] => 2020-01-30 11:55:33
+    [tr_crc] => NDM4NDM=
+    [tr_amount] => 249.45
+    [tr_paid] => 249.45
+    [tr_desc] => Numer zamówienia 43843
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => b03342916b078fd84f835b2795cfc914
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-30 10:57:30
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1N9T6BX
+    [tr_date] => 2020-01-30 11:57:24
+    [tr_crc] => NDM4NDQ=
+    [tr_amount] => 379.07
+    [tr_paid] => 379.07
+    [tr_desc] => Numer zamówienia 43844
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 67516e32cc47f9c6b590ed97b226f7b9
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-30 13:35:22
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1NA5KHX
+    [tr_date] => 2020-01-30 14:35:17
+    [tr_crc] => NDM4NDk=
+    [tr_amount] => 116.85
+    [tr_paid] => 116.85
+    [tr_desc] => Numer zamówienia 43849
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 8e4e22f9ab9116390387d9de16b1294d
+)
+
+
+
+Check MD5: 1
+===========================
+Basic payment notification
+===========================
+2020-01-30 14:42:54
+ip: 
+POST params: 
+Array
+(
+    [id] => 35457
+    [tr_id] => TR-DRN-1NAALCX
+    [tr_date] => 2020-01-30 15:42:48
+    [tr_crc] => NDM4NTQ=
+    [tr_amount] => 249.45
+    [tr_paid] => 249.45
+    [tr_desc] => Numer zamówienia 43854
+    [tr_status] => TRUE
+    [tr_error] => none
+    [tr_email] => tomasz@enduhub.com
+    [test_mode] => 1
+    [md5sum] => 500133afed036e12ddd8d661bed48fe8
+)
+
+
+
+Check MD5: 1

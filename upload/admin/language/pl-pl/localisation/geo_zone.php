@@ -5,16 +5,17 @@ $_['heading_title']      = 'Strefy geograficzne';
 // Text
 $_['text_success']       = 'Sukces: Zmydyfikowałeś strefy geograficzne!';
 $_['text_list']          = 'Lista stref podatkowych';
-$_['text_add']           = 'Dodaj strefę podatkową';
-$_['text_edit']          = 'Edytuj strefę podatkową';
+$_['text_add']           = 'Dodaj strefę geograficzą';
+$_['text_edit']          = 'Edytuj strefę geograficzną';
+$_['text_geo_zone']      = 'Strefy geograficzne';
 
 // Column
-$_['column_name']        = 'Nazwa strefy podatkowej';
+$_['column_name']        = 'Nazwa strefy geograficznej';
 $_['column_description'] = 'Opis';
 $_['column_action']      = 'Akcja';
 
 // Entry
-$_['entry_name']         = 'Nazwa strefy podatkowej:';
+$_['entry_name']         = 'Nazwa strefy geograficznej:';
 $_['entry_description']  = 'Opis:';
 $_['entry_country']      = 'Kraj:';
 $_['entry_zone']         = 'Strefa:';

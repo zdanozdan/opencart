@@ -44,3 +44,6 @@ $_['error_permission']       = 'Ostrzeżenie: Nie masz uprawnień do modyfikowan
 $_['error_name']             = 'Nazwa kategorii musi zawierać od 2 do 32 znaków!';
 $_['error_meta_title']       = 'Nazwa kategorii musi zawierać od 3 do 255 znaków!';
 $_['error_keyword']          = 'Słowa kluczowe SEO jest już w użyciu!';
+
+// Category filter
+$_['category_name']          = 'Nazwa kategorii';

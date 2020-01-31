@@ -1,0 +1,79 @@
+{{ header }}
+<div class="container">
+    {{payment}}
+</div>
+{% if not redirect %}
+    <div class="panel panel-info">
+	<div class="panel-heading"> <h3 class="panel-title"><i class="fa fa-lg fa-shopping-basket" aria-hidden="true"></i> {{ text_order_summary }}</h3> </div>
+	<div class="table-responsive">
+	    <table class="table table-bordered table-hover table-summary">
+		<thead>
+		    <tr>
+			<td class="text-left">{{ column_name }}</td>
+			<td class="text-left">{{ column_mikran_id }}</td>
+			<td class="text-right">{{ column_quantity }}</td>
+			<td class="text-right">{{ column_price }}</td>
+			<td class="text-right">{{ column_total }} {{column_total_netto}}</td>
+			<td class="text-right">{{ column_tax_rate}}</td>
+			<td class="text-right">{{ column_tax_name}}</td>
+			<td class="text-right">{{ column_total_with_tax}}</td>
+		    </tr>
+		</thead>
+		<tbody>
+		    {% for product in products %}
+			<tr>
+			    <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
+				&nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+				{% if product.recurring %} <br />
+				    <span class="label label-info">{{ text_recurring_item }}</span> <small>{{ product.recurring }}</small> {% endif %}</td>
+			    <td class="text-left">{{ product.model }}</td>
+			    <td class="text-right">{{ product.quantity }}</td>
+			    <td class="text-right">{{ product.price }}</td>
+			    <td class="text-right">{{ product.price_total_netto }}</td>
+			    <td class="text-right">{{ product.tax_rate}}%</td>
+			    <td class="text-right">{{ product.tax_amount}}</td>
+			    <td class="text-right">{{ product.price_total }}</td>
+			</tr>
+		    {% endfor %}
+		    {% for voucher in vouchers %}
+			<tr>
+			    <td class="text-left">{{ voucher.description }}</td>
+			    <td class="text-left"></td>
+			    <td class="text-right">1</td>
+			    <td class="text-right">{{ voucher.amount }}</td>
+			    <td class="text-right">{{ voucher.amount }}</td>
+			</tr>
+		    {% endfor %}
+		</tbody>		
+		<tfoot>
+		    {% for total in totals %}
+			<tr>
+			    <td colspan="4" class="text-right"><strong>{{ total.title }}:</strong></td>
+			    {%if total.code=='tax' or total.code=='total'%}
+				<td colspan="4" class="text-right">
+				    {% if total.code=='total' %}
+					<h3><span class="label label-primary">{{total.text}}</h3></span>
+				    {% else %}
+					{{ total.text }}
+				    {% endif %}
+				</td>
+			    {%else%}
+				<td class="text-right">{{ total.text }}</td>
+				<td class="text-right"></td>
+				<td class="text-right">{{ total.tax }}</td>
+				<td class="text-right">{{ total.total }} </td>
+			    {% endif %}
+			</tr>
+		    {% endfor %}
+		</tfoot>    
+	    </table>
+	</div>
+    </div>
+{{ payment }}
+{% else %} 
+<script type="text/javascript"><!--
+alert('REDIRECt: confirm.twig: {{redirect}}');			       
+//location = '{{ redirect }}';
+//--></script> 
+{% endif %}
+{{ footer }}

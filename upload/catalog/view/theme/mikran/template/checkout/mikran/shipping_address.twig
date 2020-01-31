@@ -1,0 +1,386 @@
+<div class="panel panel-info">
+    <div class="panel-heading"> <h3 class="panel-title"><i class="fa fa-lg fa-truck" aria-hidden="true"></i> {{ text_order_delivery }} </h3> </div>
+    {% if error.message %}<h4><div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error.message }}</div></h4>{% endif %}
+    {% if success.message %}<h4><div class="alert alert-success"><i class="fa fa-check"></i> {{ success.message }}</div></h4>{% endif %}
+    <div class="panel-body">
+	<div class="row">
+	    <div class="col-sm-6">
+		<fieldset id="account">
+		    <legend>{{ text_your_details }}</legend>	    
+		    <div class="form-group required has-feedback {% if error.firstname %} has-error {%elseif method=='post' %} has-success {% endif %}">
+			<label class="control-label" for="shipping-address-firstname">{{ entry_firstname }}</label>
+			<input type="text" name="shipping-address[firstname]" value="{{ firstname }}" placeholder="{{ entry_firstname }}" id="shipping-address-firstname" class="form-control" />
+			{%if error.firstname %}
+			    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			    <h4 class="alert-form"><div class="text-danger">{{error.firstname}}</div></h4>
+			{%elseif method == "post"%}
+			    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+			{%endif%}
+		    </div>
+		    <div class="form-group required has-feedback{% if error.lastname %} has-error {%elseif method=='post' %} has-success {% endif %}">
+			<label class="control-label" for="shipping-address-lastname">{{ entry_lastname }}</label>
+			<input type="text" name="shipping-address[lastname]" value="{{ lastname }}" placeholder="{{ entry_lastname }}" id="shipping-payment-lastname" class="form-control" />
+			{%if error.lastname %}
+			    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			    <h4 class="alert-form"><div class="text-danger">{{error.lastname}}</div></h4>
+			{%elseif method == "post"%}
+			    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+			{%endif%}
+		    </div>
+		    <div class="form-group required has-feedback{% if error.email %} has-error {%elseif method=='post' %} has-success {% endif %}">
+			<label class="control-label" for="shipping-address-email">{{ entry_email }}</label>
+			<input type="text" name="shipping-address[email]" value="{{ email }}" placeholder="{{ entry_email }}" id="shipping-address-email" class="form-control" />
+			
+			{%if error.email %}
+			    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			    <h4 class="alert-form"><div class="text-danger">{{error.email}}</div></h4>
+			{%elseif method == "post"%}
+			    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+			{%endif%}
+		    </div>
+		    <div class="form-group required has-feedback{% if error.telephone %} has-error {%elseif method=='post' %} has-success{% endif %}">
+			<label class="control-label" for="shipping-address-telephone">{{ entry_telephone }}</label>
+			<input type="text" name="shipping-address[telephone]" value="{{ telephone }}" placeholder="{{ entry_telephone }}" id="shipping-address-telephone" class="form-control" />
+			{%if error.telephone %}
+			    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			    <h4 class="alert-form"><div class="text-danger">{{error.telephone}}</div></h4>
+			{%elseif method == "post"%}
+			    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+			{%endif%}
+		    </div>
+		    <div class="form-group has-feedback{% if error.comment %} has-error {%elseif method=='post' %} has-success{% endif %}">
+			<label class="control-label" for="shipping-address-telephone">{{ text_comments }}</label>
+			<textarea type="text" rows="3" name="shipping-address[comment]" value="{{ comment }}" placeholder="{{ entry_comment }}" id="shipping-address-comment" class="form-control" />{{comment}}</textarea>
+			{%if error.comment %}
+			    <span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			    <h4 class="alert-form"><div class="text-danger">{{error.comment}}</div></h4>
+			{%elseif method == "post"%}
+			    <span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+			{%endif%}
+		    </div>
+		    {% if addresses %}
+			<legend>{{text_address_existing}}</legend>
+			<div class="input-group">
+			    <select name="address_id" class="form-control">
+				<option value="">---------</option>
+				{% for address in addresses %}
+				    {% if address.address_id == address_id %}
+					<option value="{{ address.address_id }}" selected="selected">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>
+				    {% else %}
+					<option value="{{ address.address_id }}">{{ address.firstname }} {{ address.lastname }}, {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>
+				    {% endif %}
+				{% endfor %}
+			    </select>
+			    <div class="input-group-btn">
+				<a name="address_id_route" href="{{use_address_route}}&id={{address_id}}"><button {% if not address_id %}disabled="disabled" {% endif %}class="btn btn-primary pull-right" type="button">{{entry_use_address}}</button></a>
+			    </div>
+			</div>
+		    {% endif %}
+		</fieldset>
+	    </div>
+	<div class="col-sm-6">
+	    <fieldset id="address">
+		<legend>{{ text_your_address_and_invoice }}</legend>
+		<div class="form-group has-feedback {% if error.company %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-company">{{ entry_company }}</label>
+		    <input type="text" name="shipping-address[company]" value="{{ company }}" placeholder="{{ entry_company }}" id="shipping-address-company" class="form-control" />
+		    
+		    {%if error.company %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.company}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group has-feedback{% if error.vat %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-vat">{{ vat_field.name }} ( {{vat_field_comment}} )</label>
+		    <div class="input-group">
+			{% if iso_code_2 %}<span class="input-group-addon">{{iso_code_2}}</span>{%endif%}
+			<input type="text" name="shipping-address[vat]" value="{{ vat_field.value }}" placeholder="{{ vat_field.name }}" id="shipping-address-vat" class="form-control" />
+			{%if iso_code_2 == 'PL' %}
+			    <span class="input-group-btn">
+				<button class="btn btn-primary" name="load-gus" type="button">{{entry_load_from_gus}}&nbsp&nbsp&nbsp&nbsp</button>
+			    </span>
+			{% endif %}
+		    </div>
+		    {%if error.vat %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.vat}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		    {%if warning.vat %}<h4 class="alert-form"><div class="text-warning">{{warning.vat}}</div></h4>{%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.address_1 %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-address-1">{{ entry_address_1 }}</label>
+		    <input type="text" name="shipping-address[address_1]" value="{{ address_1 }}" placeholder="{{ entry_address_1 }}" id="shipping-address-address-1" class="form-control" />
+		    {%if error.address_1 %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.address_1}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group has-feedback {% if error.address_2 %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-address-2">{{ entry_address_2 }}</label>
+		    <input type="text" name="shipping-address[address_2]" value="{{ address_2 }}" placeholder="{{ entry_address_2 }}" id="shipping-address-address-2" class="form-control" />
+		    {%if error.address_2 %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.address_2}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.city %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-city">{{ entry_city }}</label>
+		    <input type="text" name="shipping-address[city]" value="{{ city }}" placeholder="{{ entry_city }}" id="shipping-address-city" class="form-control" />
+
+		    {%if error.city %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.city}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.postcode %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="shipping-address-postcode">{{ entry_postcode }}</label>
+		    <input type="text" name="shipping-address[postcode]" value="{{ postcode }}" placeholder="{{ entry_postcode }}" id="shipping-address-postcode" class="form-control" />
+		    {%if error.postcode %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.postcode}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.country %} has-error {%elseif method=='post' %} has-success{% endif %}">
+		    <label class="control-label" for="shipping-address-country">{{ entry_country }}</label>
+		    <div class="input-group">
+		    <select name="shipping-address[country_id]" disabled="disabled" id="shipping-address-country" class="form-control">
+			<option value="">{{ text_select }}</option>
+			{% for country in countries %}
+			    {% if country.country_id == country_id %}
+				<option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+			    {% else %}
+				<option value="{{ country.country_id }}">{{ country.name }}</option>
+			    {% endif %}
+			{% endfor %}
+		    </select>
+		    <span class="input-group-btn">
+			<a href="{{cart_url}}" class="btn btn-default" role="button">{{text_change_country}}&nbsp&nbsp&nbsp&nbsp</a>
+		    </span>
+		    </div>
+		    {% if error.country %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.country}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}		    
+		</div>
+	    </fieldset>
+	</div>
+
+	<div class="col-sm-12">
+	    <hr/>
+
+	    {% if shipping_required %}
+		<input type="checkbox" id="delivery_address_checkbox" name="delivery_address_checkbox" {% if delivery_address_checkbox %} checked="checked" {% endif %}/>
+		<label>{{ entry_new_delivery_address }}</label>
+	    {% endif %}
+	</div>
+
+	<div class="col-sm-6 {% if not delivery_address_checkbox %} collapse {% endif %}" id="delivery-address-collapse">
+	    <fieldset id="delivery-address">
+		<legend>{{ text_delivery_address }}</legend>
+		<div class="form-group required has-feedback {% if error.delivery_address_1 %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="delivery-address-address-1">{{ entry_address_1 }}</label>
+		    <input type="text" name="delivery-address[address_1]" value="{{ delivery_address_1 }}" placeholder="{{ entry_address_1 }}" id="delivery-address-address-1" class="form-control" {% if not delivery_address_checkbox %}disabled="disabled"{% endif %}/>
+		    {%if error.delivery_address_1 %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.delivery_address_1}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group has-feedback {% if error.delivery_address_2 %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="delivery-address-address-2">{{ entry_address_2 }}</label>
+		    <input type="text" name="delivery-address[address_2]" value="{{ delivery_address_2 }}" placeholder="{{ entry_address_2 }}" id="delivery-address-address-2" class="form-control" />
+		    {%if error.delivery_address_2 %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.delivery_address_2}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.delivery_city %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="delivery-address-city">{{ entry_city }}</label>
+		    <input type="text" name="delivery-address[city]" value="{{ delivery_city }}" placeholder="{{ entry_city }}" id="delivery-address-city" class="form-control" />
+
+		    {%if error.delivery_city %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.city}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.delivery_postcode %} has-error {%elseif method=='post' %} has-success {% endif %}">
+		    <label class="control-label" for="delivery-address-postcode">{{ entry_postcode }}</label>
+		    <input type="text" name="delivery-address[postcode]" value="{{ delivery_postcode }}" placeholder="{{ entry_postcode }}" id="delivery-address-postcode" class="form-control" />
+		    {%if error.delivery_postcode %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.delivery_postcode}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}
+		</div>
+		<div class="form-group required has-feedback {% if error.delivery_country %} has-error {%elseif method=='post' %} has-success{% endif %}">
+		    <label class="control-label" for="shipping-address-country">{{ entry_country }}</label>
+		    <div class="input-group">
+			<select name="delivery-address[country_id]" disabled="disabled" id="delivery-address-country" class="form-control">
+			    <option value="">{{ text_select }}</option>
+			    {% for country in countries %}
+				{% if country.country_id == country_id %}
+				    <option value="{{ country.country_id }}" selected="selected">{{ country.name }}</option>
+				{% else %}
+				    <option value="{{ country.country_id }}">{{ country.name }}</option>
+				{% endif %}
+			    {% endfor %}
+			</select>
+			<span class="input-group-btn">
+			    <a href="{{cart_url}}" class="btn btn-default" role="button">{{text_change_country}}&nbsp&nbsp&nbsp&nbsp</a>
+			</span>
+		    </div>
+		    {% if error.delivery_country %}
+			<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
+			<h4 class="alert-form"><div class="text-danger">{{error.delivery_country}}</div></h4>
+		    {%elseif method == "post"%}
+			<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
+		    {%endif%}		    
+		</div>
+	    </fieldset>
+	</div>
+    </div>
+</div>
+</div>
+{#
+<div class="buttons clearfix">
+<div class="pull-right">
+<input type="button" value="{{ button_continue }}" id="button-shipping-address" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+</div>
+</div>
+#}
+<script type="text/javascript">
+ $(document).ready(function() {
+     $("select[name='address_id']").change(function() {
+         var selectedid  = $("select[name='address_id'] option:selected").val();
+	 if(selectedid) {
+             $("a[name='address_id_route']").attr('href',"{{use_address_route}}&id="+selectedid);
+	     $("a[name='address_id_route'] button").removeAttr("disabled");
+	 } else {
+	     $("a[name='address_id_route'] button").attr("disabled","disabled");
+	 }
+     });
+     
+     $("input[name='delivery_address_checkbox']").click(function() {
+	 $.ajax({
+	     url: 'index.php?route=checkout/mikran/shipping_address/change_delivery',
+	     dataType: 'html',
+	     method: 'post',
+	     data: $("input[name='delivery_address_checkbox']:checked"),
+	     success: function(html) {
+		 $('#delivery-address-collapse .has-feedback').removeClass('has-success');
+		 $('#delivery-address-collapse span').removeClass('glyphicon-ok');
+		 $('#delivery-address-collapse').toggle(500);
+		 if ($("input[name='delivery_address_checkbox']").is(':checked') == false) {
+		     $("input[name='delivery-address[address_1]']").attr('disabled','disabled');
+		     $("input[name='delivery-address[address_2]']").attr('disabled','disabled');
+		     $("input[name='delivery-address[city]']").attr('disabled','disabled');
+		     $("input[name='delivery-address[postcode]']").attr('disabled','disabled');
+		 } else {
+		     $("input[name='delivery-address[address_1]']").removeAttr('disabled');
+		     $("input[name='delivery-address[address_2]']").removeAttr('disabled');
+		     $("input[name='delivery-address[city]']").removeAttr('disabled');
+		     $("input[name='delivery-address[postcode]']").removeAttr('disabled');
+		 }
+	     },
+	     error: function(xhr, ajaxOptions, thrownError) {
+                 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+	     }
+         });
+     });
+     
+     var inputValue = $("input[name='shipping-address[vat]']");
+     vat = $("input[name='shipping-address[vat]']");
+     company = $("input[name='shipping-address[company]']");
+     city = $("input[name='shipping-address[city]']");
+     zip = $("input[name='shipping-address[postcode]']");
+     street = $("input[name='shipping-address[address_1]']");
+
+     $('button[name=\'load-gus\']').click(function() {
+	 $.ajax({
+	     url: 'index.php?route=checkout/mikran/shipping_address/gusapi',
+	     type: 'post',
+	     data: inputValue,
+	     dataType: 'json',
+	     beforeSend: function() {
+		 vat.parent().removeClass("has-error");
+		 vat.parent().removeClass("has-success");
+		 company.parent().removeClass("has-success");
+		 city.parent().removeClass("has-success");
+		 zip.parent().removeClass("has-success");
+		 street.parent().removeClass("has-success");
+		 $("h4[name='vat_error']").remove();
+	     },
+	     success: function(json) {
+		 if (json['error']) {
+		     vat.parent().addClass("has-error");
+		     vat.parent().parent().append('<h4 name="vat_error" class="alert-form"><div class="text-danger">'+json['error']+'</div></h4>');
+		 } else {
+		     vat.parent().addClass("has-success");
+		 }
+
+		 if(json['name']) {
+		     company.val(json['name']);
+		     company.parent().addClass("has-success");
+		     company.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+		 } else {
+		     company.parent().append('<h4 class="alert-form"><div class="text-danger">{{error_gus_loading}}</div></h4>');
+		 };
+
+		 if(json['city']) {
+		     city.val(json['city']);
+		     city.parent().addClass("has-success");
+		     city.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+		 } else {
+		     city.parent().append('<h4 class="alert-form"><div class="text-danger">{{error_gus_loading}}</div></h4>');
+		 };
+
+		 if(json['zipCode']) {
+		     zip.val(json['zipCode']);
+		     zip.parent().addClass("has-success");
+		     zip.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+		 } else {
+		     zip.parent().append('<h4 class="alert-form"><div class="text-danger">{{error_gus_loading}}</div></h4>');
+		 };
+
+		 if(json['street']) {
+		     street.val(json['street']);
+		     street.parent().addClass("has-success");
+		     street.parent().append('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>');
+		     if(json['propertyNumber']) {
+			 $("input[name='shipping-address[address_1]']").val(street.val() + " " + json['propertyNumber']);
+		     }
+		     if(json['apartmentNumber']) {
+			 $("input[name='shipping-address[address_1]']").val(street.val() + " / " + json['apartmentNumber']);
+		     }
+		 } else {
+		     street.parent().append('<h4 class="alert-form"><div class="text-danger">{{error_gus_loading}}</div></h4>');
+		 };
+		 
+	     },
+	     error: function(xhr, ajaxOptions, thrownError) {
+		 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+             },
+	 });
+     });
+ });
+</script>

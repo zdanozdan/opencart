@@ -1,0 +1,68 @@
+<div id="shipping_country_result">
+    <div class="panel panel-info">
+	<div class="panel-heading"> <h3 class="panel-title"><i class="fa fa-lg fa-globe" aria-hidden="true"></i> {{ text_shipping }}</h3> </div>
+	<div class="panel-body font-larger">
+	    {% include "mikran/template/checkout/mikran/_messages.twig" with {'module':'country'} %}
+	    <div class="form-horizontal">
+		<div class="form-group required">
+		    <label class="col-sm-1 country-label control-label" for="input-country">{{ entry_country }}</label>
+		    {% if country_code %}
+			<div class="col-sm-1">
+			    <div class="flag-icon-background flag-icon-{{country_code|lower}} flag-icon-medium"></div>
+			</div>
+		    {% endif %}
+		    <div class="col-sm-3">
+			<select name="country_id" id="input-country" class="form-control">
+			    <option value="">{{ text_select }}</option>
+			    {% for country in countries %}
+				<option value="{{ country.country_id }}" {% if country.country_id == country_id %} selected="selected" {% endif %}>{{ country.name }}</option>
+			    {% endfor %}
+			</select>
+		    </div>
+		    <div class="col-sm-3">
+			{%if country_code and country_code != 'PL' and eu_member%}
+			    <input type="checkbox" id="is_vat_eu" {% if is_vat_eu %}checked="checked"{% endif %} /> I have EU VAT numer
+			{% endif %}
+		    </div>
+		</div>
+	    </div>
+	</div>
+    </div>
+</div>
+<script type="text/javascript">
+ $(document).ready(function() {
+     $("#is_vat_eu").change(function () {
+	 var eu = $('#is_vat_eu').is(":checked");
+	 $.ajax({
+	     url: 'index.php?route=checkout/mikran/shipping_country/set_eu',
+	     type: 'get',
+	     data: 'eu=' + eu,
+	     dataType: 'html',
+	     success: function(html) {
+		 //$('#shipping_method_result').html(html);
+	     },
+	     error: function(xhr, ajaxOptions, thrownError) {
+		 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+             },
+	 });
+     });
+     $("#input-country").change(function () {
+	 var country_id = $("select[name='country_id'] option:selected").val();
+	 $.ajax({
+	     url: 'index.php?route=checkout/mikran/shipping_country',
+	     type: 'post',
+	     data:  'country_id='+country_id,
+	     dataType: 'html',
+	     success: function(html) {
+		 $('#shipping_country_result').html(html);
+		 // Create the event
+		 //$(document).trigger("update-totals-table");
+		 $(document).trigger("country-changed-trigger");
+	     },
+	     error: function(xhr, ajaxOptions, thrownError) {
+		 alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+             },
+	 });
+     });
+ });
+</script>

@@ -1,0 +1,7 @@
+{% for message in messages %}
+    {% if message['module'] == module%}
+	<div class="alert alert-{{message['severity']}}"><i class="fa fa-exclamation-circle"></i>
+	    {{message['message']}}
+	</div>
+      {% endif %}
+{% endfor %}

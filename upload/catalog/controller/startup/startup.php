@@ -1,5 +1,5 @@
 <?php
-class ControllerStartupStartup extends Controller {
+class ControllerStartupStartupBase extends Controller {
 	public function index() {
 		// Store
 		if ($this->request->server['HTTPS']) {
@@ -128,6 +128,34 @@ class ControllerStartupStartup extends Controller {
 			setcookie('tracking', $this->request->get['tracking'], time() + 3600 * 24 * 1000, '/');
 		
 			$this->db->query("UPDATE `" . DB_PREFIX . "marketing` SET clicks = (clicks + 1) WHERE code = '" . $this->db->escape($this->request->get['tracking']) . "'");
+		}
+
+
+        // Countries
+		$code = '';
+		
+		$this->load->model('localisation/country');
+		
+		$countries = $this->model_localisation_country->getCountriesDict();
+		
+		if (isset($this->session->data['country_id'])) {
+			$code = $this->session->data['country_id'];
+		}
+		
+		if (isset($this->request->cookie['country_id']) && !array_key_exists($code, $countries)) {
+			$code = $this->request->cookie['country_id'];
+		}
+
+		if (!array_key_exists($code, $countries)) {
+			$code = $this->config->get('config_country_id');
+		}
+		
+		if (!isset($this->session->data['country_id']) || $this->session->data['country_id'] != $code) {
+			$this->session->data['country_id'] = $code;
+		}
+		
+		if (!isset($this->request->cookie['country_id']) || $this->request->cookie['country_id'] != $code) {
+			setcookie('country_id', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);
 		}		
 		
 		// Currency
@@ -161,8 +189,8 @@ class ControllerStartupStartup extends Controller {
 		
 		// Tax
 		$this->registry->set('tax', new Cart\Tax($this->registry));
-		
-		if (isset($this->session->data['shipping_address'])) {
+
+		if (isset($this->session->data['shipping_address']['country_id']) && isset($this->session->data['shipping_address']['zone_id'])) {
 			$this->tax->setShippingAddress($this->session->data['shipping_address']['country_id'], $this->session->data['shipping_address']['zone_id']);
 		} elseif ($this->config->get('config_tax_default') == 'shipping') {
 			$this->tax->setShippingAddress($this->config->get('config_country_id'), $this->config->get('config_zone_id'));
@@ -191,4 +219,33 @@ class ControllerStartupStartup extends Controller {
 		// OpenBay Pro
 		$this->registry->set('openbay', new Openbay($this->registry));					
 	}
+}
+
+class ControllerStartupStartup extends ControllerStartupStartupBase {
+	public function index() {
+        return parent::index();
+
+        //What is this ?
+        if(isset($this->request->get['lang'])) {
+            $languages = $this->model_localisation_language->getLanguages();
+            foreach($languages as $lang) {
+                $code = explode("-",$lang['code']);
+                if($code[0] == $this->request->get['lang']) {
+                    $code = $lang['code'];
+                    
+                    $this->session->data['language'] = $code;
+                    setcookie('language', $code, time() + 60 * 60 * 24 * 30, '/', $this->request->server['HTTP_HOST']);
+
+                    // Overwrite the default language object
+                    $language = new Language($code);
+                    $language->load($code);
+		
+                    $this->registry->set('language', $language);
+		
+                    // Set the config language_id
+                    $this->config->set('config_language_id', $languages[$code]['language_id']);
+                }
+            }
+        }
+    }
 }

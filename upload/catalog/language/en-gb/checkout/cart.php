@@ -24,6 +24,10 @@ $_['text_payment_recurring']   = 'Payment Profile';
 $_['text_trial_description']   = '%s every %d %s(s) for %d payment(s) then';
 $_['text_payment_description'] = '%s every %d %s(s) for %d payment(s)';
 $_['text_payment_cancel']      = '%s every %d %s(s) until canceled';
+$_['text_doubts']   	= 'Have doubts ?';
+$_['text_return']       = 'Remember that You can always return goods you have purchased within 14 days without any reason..<a href="information/information&information_id=5"> Terms & conditions. </a>';
+$_['text_order_summary'] = "Order summary.";
+$_['text_order_delivery'] = "Delivery and invoice data.";
 
 // Column
 $_['column_image']             = 'Image';
@@ -33,9 +37,21 @@ $_['column_quantity']          = 'Quantity';
 $_['column_price']             = 'Unit Price';
 $_['column_total']             = 'Total';
 
+//Mikran
+$_['column_tax_name']          = 'Tax';
+$_['column_tax_rate']          = 'Rate';
+$_['column_total_with_tax']    = 'Brutto';
+$_['column_total_netto']       = 'netto';
+$_['column_mikran_id']         = 'Mikran code';
+$_['text_delivery']            = 'Delivery';
+$_['text_address']             = 'Address';
+$_['text_payment']             = 'Payment';
+
 // Error
 $_['error_stock']              = 'Products marked with *** are not available in the desired quantity or not in stock!';
 $_['error_minimum']            = 'Minimum order amount for %s is %s!';
 $_['error_required']           = '%s required!';
 $_['error_product']            = 'Warning: There are no products in your cart!';
 $_['error_recurring_required'] = 'Please select a payment recurring!';
+$_['error_shipping_method']    = 'Wrong shipping method!';
+$_['error_shipping_post']      = 'Unable to set shipping!';

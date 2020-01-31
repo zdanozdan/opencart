@@ -21,7 +21,10 @@ class ControllerExtensionPaymentStripe extends Controller {
 
 		// get order info
 		$this->load->model('checkout/order');
-		$order_info = $this->model_checkout_order->getOrder($this->session->data['order_id']);
+        $order_id = isset($this->request->get['order_id']) ? $this->request->get['order_id'] : $this->session->data['order_id'];
+        $this->session->data['order_id'] = $order_id;
+		$order_info = $this->model_checkout_order->getOrder($order_id);
+        $data['text_order_info'] = sprintf($this->language->get('text_order_info'),$order_id,$this->currency->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value']));
 
 		// get order billing country
 		$this->load->model('localisation/country');
@@ -49,14 +52,14 @@ class ControllerExtensionPaymentStripe extends Controller {
 		return $this->load->view('extension/payment/stripe', $data);
 	}
 
-	public function confirm(){
+	public function confirm() {
 
 		$this->load->model('extension/payment/stripe');
 		$json = array('error' => 'Server did not get valid request to process');
 
 		try{
 
-			if(!isset($this->session->data['order_id'])){
+			if(!isset($this->session->data['order_id'])) {
 				$this->model_extension_payment_stripe->log(__FILE__, __LINE__, "Session Data ", $this->session->data);
 				throw new Exception("Your order seems lost in session. We did not charge your payment. Please contact administrator for more information.");
 			}
@@ -179,9 +182,12 @@ class ControllerExtensionPaymentStripe extends Controller {
 			// update order statatus & addOrderHistory
 			// paid will be true if the charge succeeded, or was successfully authorized for later capture.
 			if($intent->status == "succeeded") {
-				$this->model_checkout_order->addOrderHistory($order_info['order_id'], $this->config->get('payment_stripe_order_success_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($order_info['order_id'], $this->config->get('payment_stripe_order_success_status_id'), $message, true);
+                //Add transcation history
+                $this->load->model('account/transaction');
+                $this->model_account_transaction->addPaymentHistory($order_info['customer_id'],array('order_id'=>$order_info['order_id'],'amount'=>$intent->amount/100,'description'=>$this->config->get('payment_stripe_order_success_status_id')." " .$message));
 			} else {
-				$this->model_checkout_order->addOrderHistory($order_info['order_id'], $this->config->get('payment_stripe_order_failed_status_id'), $message, false);
+				$this->model_checkout_order->addOrderHistory($order_info['order_id'], $this->config->get('payment_stripe_order_failed_status_id'), $message, true);
 			}
 			
 			// charge completed successfully

@@ -1,0 +1,142 @@
+/* mikran specific stylesheet */
+
+.list-group-item span.category_level_1 {
+    margin-left:10px;
+}
+
+.list-group-item span.category_level_2 {
+    margin-left:20px;
+}
+
+.list-group-item span.category_level_3 {
+    margin-left:30px;
+}
+
+.font-larger {
+    font-size: larger;
+}
+.flag-icon-medium {
+    height: 30px;
+    width: 40px;
+    border: 1px solid #ddd;
+}
+
+.form-horizontal .country-label {
+    text-align:left;
+}
+
+/*table for shipping*/
+.table-shipping td.align-middle {
+    vertical-align: middle;
+}
+.table-shipping .shipping-price {
+    font-size:2rem;
+}
+
+.table-summary tfoot{
+    border-top:2px solid;
+}
+
+.alert-form {
+    margin-top: 0px;
+}
+
+/*alert*/
+.alert-shipping {
+    margin: 3px;
+    font-size: 1.5rem;
+}
+
+/* checkout wizard */
+
+.bs-wizard > .bs-wizard-step {
+    padding: 0;
+    position: relative;
+}
+
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background: #96858d;
+    top: 60px;
+    left: 50%;
+    margin-top: -35px;
+    margin-left: -15px;
+    border-radius: 50%;
+    border: 1px solid #96858d;
+}
+
+.bs-wizard > .bs-wizard-step.active > .progress {
+    background-color: #dddddd;
+}
+
+.bs-wizard > .bs-wizard-step:first-child > .progress {
+    left: 50%;
+    width: 100%;
+}
+
+.bs-wizard > .bs-wizard-step > .progress {
+    margin: 20px 0;
+    position: relative;
+    border-radius: 0px;
+    height: 2px;
+    box-shadow: none;
+    background-color: #dddddd;
+}
+
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot::after {
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-radius: 50px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    content: '';
+    color:#ffffff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bs-wizard > .bs-wizard-step:first-child > .bs-wizard-dot::after {
+    content: '1';
+}
+.bs-wizard > .bs-wizard-step:nth-child(2) > .bs-wizard-dot::after {
+    content: '2';
+}
+.bs-wizard > .bs-wizard-step:nth-child(3) > .bs-wizard-dot::after {
+    content: '3';
+}
+.bs-wizard > .bs-wizard-step:nth-child(3) > .progress {
+    width: 50%;
+}
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot {
+
+    pointer-events: none;
+}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+}
+
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot::after {
+    background: transparent;
+    color:#aaaaaa;
+}
+
+.relative-spinner {
+     position: relative;
+     left: 50%;
+     top: 50%;
+}
+
+.bank-icon img {
+    max-width:100px;
+}
+
+.panel-message {
+    font-size:16px;
+}
+       

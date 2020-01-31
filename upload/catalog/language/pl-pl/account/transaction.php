@@ -1,11 +1,13 @@
 <?php
 // Heading
 $_['heading_title']      = 'Transakcje';
+$_['heading_title_payments']      = 'Płatności otrzymane';
 
 // Column
 $_['column_date_added']  = 'Data Dodania';
 $_['column_description'] = 'Opis';
-$_['column_amount']      = 'lość (%s)';
+$_['column_amount']      = 'Ilość (%s)';
+$_['column_order_id']    = 'Nr zamówienia';
 
 // Text
 $_['text_account']       = 'Konto';
